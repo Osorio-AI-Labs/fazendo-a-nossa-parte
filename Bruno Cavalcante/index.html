@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruno Lopes F. Cavalcante – Supervisor de Segurança</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-deep:      #0f0f14;
+      --bg-base:      #1a1a24;
+      --card-bg:      #1e1e2c;
+      --card-light:   #252535;
+      --shadow-dark:  rgba(0,0,0,0.6);
+      --shadow-light: rgba(255,255,255,0.06);
+      --accent:       #00bfff;
+      --accent2:      #0080c8;
+      --accent-glow:  rgba(0,191,255,0.25);
+      --gold:         #ffd700;
+      --text:         #e8e8f0;
+      --text-muted:   #8888aa;
+      --border:       rgba(0,191,255,0.12);
+      --radius:       18px;
+      --radius-sm:    10px;
+      --radius-pill:  50px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,100,180,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 85%, rgba(0,191,255,0.10) 0%, transparent 55%),
+        linear-gradient(135deg, #0a0a12 0%, #101020 50%, #0d1020 100%);
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,191,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,191,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridPulse 8s ease-in-out infinite;
+    }
+    @keyframes gridPulse { 0%,100%{opacity:.5}50%{opacity:1} }
+    #particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    .particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;opacity:0;animation:floatUp linear infinite}
+    @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.4}100%{transform:translateY(-20px) scale(1.5);opacity:0}}
+    .site-wrapper{position:relative;z-index:1}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(15,15,20,.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+    .nav-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.1rem;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+    .nav-logo span{color:var(--text)}
+    .nav-links{display:flex;gap:.25rem}
+    .nav-links a{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:all .3s ease;position:relative;overflow:hidden}
+    .nav-links a::before{content:'';position:absolute;inset:0;background:var(--accent-glow);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;border-radius:inherit}
+    .nav-links a:hover{color:var(--accent)}
+    .nav-links a:hover::before{transform:scaleX(1)}
+    .nav-links a:active{transform:scale(.95)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+    #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 2rem 4rem;text-align:center;position:relative}
+    .hero-photo-frame{margin-bottom:1.1rem;position:relative}
+    .hero-photo-ring{position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(0,191,255,.22);box-shadow:0 0 35px rgba(0,191,255,.12);animation:ringPulse 3.2s ease-in-out infinite}
+    @keyframes ringPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.04);opacity:1}}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 20px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;animation:fadeDown .8s ease both}
+    .hero-badge i{animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .hero-avatar{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--card-bg),var(--card-light));border:3px solid var(--accent);box-shadow:0 0 0 6px rgba(0,191,255,.12),0 0 40px rgba(0,191,255,.3),-6px -6px 18px var(--shadow-light),6px 6px 18px var(--shadow-dark);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin:0 auto 1.8rem;animation:fadeUp .9s ease .1s both;transition:transform .3s ease,box-shadow .3s ease;cursor:default;overflow:hidden;position:relative}
+    .hero-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-avatar:hover{transform:scale(1.07) rotate(3deg);box-shadow:0 0 0 8px rgba(0,191,255,.2),0 0 60px rgba(0,191,255,.45),-6px -6px 18px var(--shadow-light),6px 6px 18px var(--shadow-dark)}
+    .hero-name{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.8rem);line-height:1.1;letter-spacing:-1px;color:var(--text);animation:fadeUp .9s ease .2s both;text-shadow:0 0 40px rgba(0,191,255,.3)}
+    .hero-name .accent{color:var(--accent)}
+    .hero-subtitle{font-size:clamp(.85rem,2vw,1rem);color:var(--text-muted);margin-top:.6rem;letter-spacing:3px;text-transform:uppercase;animation:fadeUp .9s ease .3s both}
+    .hero-role-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:1.8rem;animation:fadeUp .9s ease .4s both}
+    .role-tag{padding:7px 18px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;background:var(--card-bg);color:var(--accent);border:1px solid var(--border);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
+    .role-tag:hover{background:var(--accent);color:#000;box-shadow:0 0 20px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transform:translateY(-2px)}
+    .hero-contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:2rem;animation:fadeUp .9s ease .5s both}
+    .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;margin-top:1.2rem;animation:fadeUp .9s ease .55s both}
+    .contact-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:var(--radius-pill);font-size:.8rem;font-weight:500;text-decoration:none;color:var(--text);background:var(--card-bg);border:1px solid var(--border);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease}
+    .contact-chip i{color:var(--accent);font-size:.85rem}
+    .contact-chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
+    .contact-chip:active{transform:translateY(0) scale(.97);box-shadow:inset 3px 3px 8px var(--shadow-dark),inset -3px -3px 8px var(--shadow-light)}
+    .hero-cta{margin-top:2.5rem;animation:fadeUp .9s ease .6s both}
+    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:var(--radius-pill);font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
+    .btn-primary{color:#000;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 24px var(--accent-glow),0 2px 8px rgba(0,0,0,.4)}
+    .btn-secondary{color:var(--text);background:var(--card-bg);border:1px solid var(--border);box-shadow:-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark)}
+    .btn-primary::after,.btn-secondary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25),transparent);opacity:0;transition:opacity .25s}
+    .btn-primary:hover,.btn-secondary:hover{transform:translateY(-3px)}
+    .btn-primary:hover{box-shadow:0 10px 40px var(--accent-glow)}
+    .btn-secondary:hover{color:var(--accent);border-color:rgba(0,191,255,.35);box-shadow:0 8px 28px rgba(0,191,255,.18),-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark)}
+    .btn-primary:hover::after,.btn-secondary:hover::after{opacity:1}
+    .btn-primary:active,.btn-secondary:active{transform:scale(.97) translateY(0)}
+    .btn-primary:active{box-shadow:0 2px 12px var(--accent-glow)}
+    .btn-secondary:active{box-shadow:inset 3px 3px 8px var(--shadow-dark),inset -3px -3px 8px var(--shadow-light)}
+    .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
+    .scroll-indicator i{font-size:1.2rem;color:var(--accent)}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+    .section-header{text-align:center;margin-bottom:3rem}
+    .section-label{display:inline-flex;align-items:center;gap:8px;padding:5px 18px;border-radius:var(--radius-pill);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:rgba(0,191,255,.07);margin-bottom:.8rem}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--text)}
+    .section-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--accent),transparent);margin:.8rem auto 0;border-radius:2px}
+    .card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:2rem;box-shadow:-6px -6px 16px var(--shadow-light),6px 6px 16px var(--shadow-dark);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+    .card:hover{transform:translateY(-4px);border-color:rgba(0,191,255,.3);box-shadow:-6px -6px 16px var(--shadow-light),6px 6px 24px var(--shadow-dark),0 0 30px rgba(0,191,255,.08)}
+    #resumo .card p{font-size:1rem;line-height:1.85;color:var(--text-muted)}
+    #resumo .card p+p{margin-top:1rem}
+    .stats-row{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+    .stat-chip{flex:1 1 140px;display:flex;flex-direction:column;align-items:center;padding:1.2rem 1rem;border-radius:var(--radius);background:var(--card-light);border:1px solid var(--border);box-shadow:-4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark);transition:all .25s ease;cursor:default}
+    .stat-chip:hover{border-color:rgba(0,191,255,.35);transform:scale(1.04);box-shadow:0 0 20px rgba(0,191,255,.15),-4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark)}
+    .stat-value{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2rem;color:var(--accent)}
+    .stat-label{font-size:.72rem;color:var(--text-muted);letter-spacing:1px;margin-top:4px;text-transform:uppercase;text-align:center}
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),transparent)}
+    .timeline-item{position:relative;margin-bottom:2.2rem;opacity:0;transform:translateX(-20px);transition:opacity .5s ease,transform .5s ease}
+    .timeline-item.visible{opacity:1;transform:translateX(0)}
+    .timeline-dot{position:absolute;left:-2.45rem;top:12px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent-glow);border:2px solid var(--bg-deep)}
+    .exp-card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;box-shadow:-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark);cursor:pointer;transition:all .3s ease}
+    .exp-card:hover{border-color:rgba(0,191,255,.3);transform:translateX(6px);box-shadow:-4px -4px 12px var(--shadow-light),8px 8px 20px var(--shadow-dark),0 0 20px rgba(0,191,255,.08)}
+    .exp-card:active{transform:translateX(4px) scale(.99);box-shadow:inset 2px 2px 8px var(--shadow-dark),inset -2px -2px 8px var(--shadow-light)}
+    .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem}
+    .exp-company{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;color:var(--text)}
+    .exp-period{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.72rem;font-weight:600;color:var(--accent)}
+    .exp-role{font-size:.85rem;color:var(--text-muted);margin-top:4px}
+    .exp-body{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s;opacity:0}
+    .exp-body.open{max-height:800px;opacity:1}
+    .exp-body ul{list-style:none;padding:0;margin-top:1rem;display:flex;flex-direction:column;gap:6px}
+    .exp-body li{display:flex;align-items:flex-start;gap:10px;font-size:.85rem;color:var(--text-muted);line-height:1.5}
+    .exp-body li::before{content:'&#9658;';color:var(--accent);flex-shrink:0;margin-top:1px}
+    .exp-toggle{margin-top:.8rem;display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--accent);font-weight:600;cursor:pointer;transition:opacity .2s}
+    .exp-toggle i{transition:transform .35s ease}
+    .exp-toggle.open i{transform:rotate(180deg)}
+    .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+    .skills-grid{display:flex;flex-wrap:wrap;gap:.75rem}
+    .skill-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-pill);background:var(--card-bg);border:1px solid var(--border);font-size:.8rem;font-weight:500;color:var(--text);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
+    .skill-chip i{color:var(--accent);font-size:.8rem}
+    .skill-chip:hover{background:var(--card-light);border-color:rgba(0,191,255,.35);color:var(--accent);transform:scale(1.05) translateY(-2px);box-shadow:0 8px 20px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
+    .skill-chip:active{transform:scale(.97);box-shadow:inset 2px 2px 6px var(--shadow-dark),inset -2px -2px 6px var(--shadow-light)}
+    .courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+    .course-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--card-bg);border:1px solid var(--border);font-size:.82rem;color:var(--text);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
+    .course-item .ci{width:32px;height:32px;border-radius:50%;background:rgba(0,191,255,.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .course-item .ci i{color:var(--accent);font-size:.8rem}
+    .course-item:hover{border-color:rgba(0,191,255,.35);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,191,255,.12),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
+    .course-item:active{transform:scale(.97);box-shadow:inset 2px 2px 6px var(--shadow-dark),inset -2px -2px 6px var(--shadow-light)}
+    .edu-card{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+    .edu-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,191,255,.1);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;box-shadow:-4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark);transition:transform .3s ease,box-shadow .3s ease}
+    .edu-icon:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 0 24px var(--accent-glow)}
+    .edu-info h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text)}
+    .edu-info p{font-size:.85rem;color:var(--text-muted);margin-top:4px}
+    .cnh-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:var(--radius-pill);background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);font-size:.82rem;font-weight:600;color:var(--gold);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
+    .cnh-badge:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,.2)}
+    footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;position:relative;z-index:1;color:var(--text-muted);font-size:.78rem}
+    footer a{color:var(--accent);text-decoration:none}
+    #back-top{position:fixed;bottom:2rem;right:1.5rem;z-index:200;width:46px;height:46px;border-radius:50%;background:var(--card-bg);border:1px solid var(--border);box-shadow:-4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.1rem;cursor:pointer;text-decoration:none;opacity:0;pointer-events:none;transition:all .3s ease}
+    #back-top.show{opacity:1;pointer-events:auto}
+    #back-top:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--accent-glow)}
+    #back-top:active{transform:scale(.95);box-shadow:inset 2px 2px 6px var(--shadow-dark),inset -2px -2px 6px var(--shadow-light)}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .ripple-host{position:relative;overflow:hidden}
+    .ripple-wave{position:absolute;border-radius:50%;background:rgba(0,191,255,.25);transform:scale(0);animation:ripple .55s linear;pointer-events:none}
+    @keyframes ripple{to{transform:scale(4);opacity:0}}
+    @media(max-width:640px){
+      .nav-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(15,15,20,.95);backdrop-filter:blur(20px);padding:1rem;gap:.5rem;border-bottom:1px solid var(--border)}
+      .nav-links.open{display:flex}
+      .hamburger{display:flex}
+      .timeline{padding-left:1.2rem}
+      .timeline-dot{left:-1.65rem}
+      .edu-card{flex-direction:column;text-align:center}
+    }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+  <div class="site-wrapper">
+    <nav>
+      <div class="nav-logo">B<span>RUNO</span> CAVALCANTE</div>
+      <div class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></div>
+      <div class="nav-links" id="nav-links">
+        <a href="#hero"><i class="fa fa-home"></i>Início</a>
+        <a href="#resumo"><i class="fa fa-user"></i>Resumo</a>
+        <a href="#experiencia"><i class="fa fa-briefcase"></i>Experiência</a>
+        <a href="#formacao"><i class="fa fa-graduation-cap"></i>Formação</a>
+        <a href="#cursos"><i class="fa fa-certificate"></i>Cursos</a>
+        <a href="#competencias"><i class="fa fa-shield-alt"></i>Competências</a>
+      </div>
+    </nav>
+
+    <section id="hero">
+      <div class="hero-badge"><i class="fa fa-shield-alt"></i> Supervisor de Segurança Patrimonial</div>
+      <div class="hero-photo-frame">
+        <div class="hero-photo-ring"></div>
+        <div class="hero-avatar"><img src="./bruno-github.jpg" alt="Foto de Bruno Lopes Fabrício Cavalcante"></div>
+      </div>
+      <h1 class="hero-name">BRUNO <span class="accent">LOPES</span><br>F. CAVALCANTE</h1>
+      <p class="hero-subtitle">Rio de Janeiro – RJ &nbsp;|&nbsp; +22 Anos de Experiência</p>
+      <div class="hero-role-tags">
+        <span class="role-tag">Supervisor de Segurança</span>
+        <span class="role-tag">Supervisor Operacional</span>
+        <span class="role-tag">Supervisor de Área</span>
+        <span class="role-tag">Gestor de Segurança</span>
+      </div>
+      <div class="hero-contacts">
+        <a href="tel:+5521968511221" class="contact-chip"><i class="fa fa-phone"></i>(21) 96851-1221</a>
+        <a href="https://wa.me/5521993414232" target="_blank" class="contact-chip ripple-host"><i class="fab fa-whatsapp"></i>(21) 99341-4232</a>
+        <a href="mailto:brunocavalcante07@yahoo.com.br" class="contact-chip ripple-host"><i class="fa fa-envelope"></i>brunocavalcante07@yahoo.com.br</a>
+        <span class="cnh-badge"><i class="fa fa-id-card"></i>CNH Cat. B – Ativ. Remunerada</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#resumo" class="btn-primary ripple-host"><i class="fa fa-eye"></i>Ver Currículo</a>
+        <button type="button" class="btn-secondary ripple-host" id="download-pdf-btn"><i class="fa fa-file-pdf"></i>Baixar PDF</button>
+      </div>
+      <div class="scroll-indicator"><span>Role</span><i class="fa fa-chevron-down"></i></div>
+    </section>
+
+    <section id="resumo">
+      <div class="section-header reveal">
+        <div class="section-label"><i class="fa fa-user-tie"></i> Perfil</div>
+        <h2 class="section-title">Resumo Profissional</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="card reveal">
+        <p>Profissional com mais de <strong style="color:var(--accent)">22 anos de experiência</strong> em Segurança Patrimonial, supervisão operacional, liderança de equipes e gestão de operações em ambientes de alta complexidade.</p>
+        <p>Atuação consolidada em <strong style="color:var(--accent)">hospitais, instituições financeiras, órgãos públicos, condomínios corporativos, shopping centers, hotéis e grandes eventos</strong>, com forte vivência em controle de acesso, prevenção de riscos, monitoramento eletrônico, gestão de escalas, treinamento de equipes e resposta a incidentes.</p>
+        <p>Perfil resolutivo, disciplinado e orientado à continuidade operacional, com sólida interface junto às áreas administrativas e operacionais.</p>
+        <div class="stats-row">
+          <div class="stat-chip"><span class="stat-value">22+</span><span class="stat-label">Anos de Experiência</span></div>
+          <div class="stat-chip"><span class="stat-value">10+</span><span class="stat-label">Empresas Atuadas</span></div>
+          <div class="stat-chip"><span class="stat-value">7+</span><span class="stat-label">Setores Cobertos</span></div>
+          <div class="stat-chip"><span class="stat-value">2</span><span class="stat-label">Megaeventos Mundiais</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiencia">
+      <div class="section-header reveal">
+        <div class="section-label"><i class="fa fa-briefcase"></i> Histórico</div>
+        <h2 class="section-title">Experiência Profissional</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Grupo Lothar Serviços de Segurança</div><div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> Supervisor de Segurança Patrimonial</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2025</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Supervisão das operações no Shopping Vogue Square, Square Design Hotel e Office</li>
+              <li>Gestão direta de equipes operacionais</li>
+              <li>Controle de escalas e cobertura de postos</li>
+              <li>DDS e treinamentos operacionais</li>
+              <li>Fiscalização de rotinas de segurança</li>
+              <li>Apoio em evacuações, emergências e incidentes</li>
+              <li>Interface com brigada e manutenção</li>
+              <li>Coordenação operacional em eventos</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Fenixx Segurança e Transporte de Valores</div><div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> Supervisor de Área</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2024</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Supervisão operacional de múltiplos contratos</li>
+              <li>Gestão de equipes distribuídas</li>
+              <li>Controle documental e escalas</li>
+              <li>Fiscalização operacional e treinamento in loco</li>
+              <li>Atendimento ao cliente</li>
+              <li>Monitoramento via sistema operacional</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Angel's Segurança e Vigilância</div><div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> Supervisor de Segurança Patrimonial</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2019–2020</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Supervisão de postos bancários</li>
+              <li>Gestão de vigilantes e controle de escalas</li>
+              <li>Monitoramento de ocorrências</li>
+              <li>Aplicação de medidas disciplinares</li>
+              <li>Atendimento operacional ao cliente</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Pró-Saúde – H. E. Getúlio Vargas</div><div class="exp-role"><i class="fa fa-hospital" style="color:var(--accent)"></i> Líder Administrativo de Controle de Acesso</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2018–2019</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Gestão de equipe de controle de acesso e supervisão de fluxo hospitalar</li>
+              <li>Elaboração de escalas e adequação de POPs</li>
+              <li>Monitoramento por CFTV e registro de ocorrências</li>
+              <li>Interface com RH, DP, almoxarifado, controladoria e manutenção</li>
+              <li>Atuação em emergências hospitalares e múltiplas vítimas</li>
+              <li>Participação na CIPA</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Força Tática Segurança</div><div class="exp-role"><i class="fa fa-eye" style="color:var(--accent)"></i> Vigilante Patrimonial</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2016–2017</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Segurança institucional e controle de acesso</li>
+              <li>Vigilância patrimonial e rondas operacionais</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Sunset Vigilância e Segurança</div><div class="exp-role"><i class="fa fa-star" style="color:var(--accent)"></i> Supervisor / Líder Operacional / Steward (Freelancer)</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2014–2016</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Coordenação operacional em grandes eventos</li>
+              <li>Gestão de equipes e controle de acesso</li>
+              <li>Organização de fluxo de público em arenas esportivas</li>
+            </ul>
+            <div style="margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem;">
+              <span class="role-tag" style="font-size:.72rem;padding:4px 12px;">⚽ Copa do Mundo FIFA</span>
+              <span class="role-tag" style="font-size:.72rem;padding:4px 12px;">🏅 Olimpíadas Rio 2016</span>
+              <span class="role-tag" style="font-size:.72rem;padding:4px 12px;">🥊 UFC</span>
+              <span class="role-tag" style="font-size:.72rem;padding:4px 12px;">🏀 NBA Global Games</span>
+              <span class="role-tag" style="font-size:.72rem;padding:4px 12px;">🎵 Shows &amp; Grandes Eventos</span>
+            </div></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Juiz de Fora Empresa de Vigilância</div><div class="exp-role"><i class="fa fa-eye" style="color:var(--accent)"></i> Vigilante Patrimonial</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2011–2016</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Atuação na Petrobras e INSS</li>
+              <li>Vigilância patrimonial, controle de acesso, rondas e prevenção de riscos</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">Executive Service Segurança</div><div class="exp-role"><i class="fa fa-user-tie" style="color:var(--accent)"></i> Vigilante / Supervisor Operacional</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2004–2011</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Atuação na Caixa Econômica Federal, Correios e sede administrativa</li>
+              <li>Supervisão operacional, gestão de postos, escalas e fiscalização</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="timeline-item"><div class="timeline-dot"></div>
+          <div class="exp-card ripple-host" onclick="toggleExp(this)">
+            <div class="exp-header">
+              <div><div class="exp-company">United Segurança</div><div class="exp-role"><i class="fa fa-globe" style="color:var(--accent)"></i> Vigilante Patrimonial</div></div>
+              <span class="exp-period"><i class="fa fa-calendar"></i>2004</span>
+            </div>
+            <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+            <div class="exp-body"><ul>
+              <li>Atuação em consulados, escolas internacionais, condomínios e empresas privadas</li>
+              <li>Controle de acesso, vigilância patrimonial e rondas preventivas</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="formacao">
+      <div class="section-header reveal">
+        <div class="section-label"><i class="fa fa-graduation-cap"></i> Educação</div>
+        <h2 class="section-title">Formação Acadêmica</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="grid2">
+        <div class="card reveal edu-card">
+          <div class="edu-icon">🎓</div>
+          <div class="edu-info">
+            <h3>Ensino Superior Completo</h3>
+            <p style="color:var(--accent);font-weight:600;margin-top:6px;">Gestão de Segurança Privada</p>
+            <p>Formação de nível superior com foco em gestão, liderança e operações de segurança patrimonial.</p>
+          </div>
+        </div>
+        <div class="card reveal" style="display:flex;flex-direction:column;justify-content:center;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🚗</span>
+            <div><div style="font-family:Montserrat;font-weight:700;color:var(--text)">Habilitação</div><div style="font-size:.85rem;color:var(--text-muted);margin-top:3px;">CNH Categoria B – Atividade Remunerada</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">📍</span>
+            <div><div style="font-family:Montserrat;font-weight:700;color:var(--text)">Localização</div><div style="font-size:.85rem;color:var(--text-muted);margin-top:3px;">Rio de Janeiro – RJ | Disponível para deslocamento</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cursos">
+      <div class="section-header reveal">
+        <div class="section-label"><i class="fa fa-certificate"></i> Qualificações</div>
+        <h2 class="section-title">Cursos &amp; Certificações</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="courses-grid reveal">
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-shield-alt"></i></div><span>Supervisor de Segurança Patrimonial <small style="color:var(--accent);display:block">CBO 5103-10</small></span></div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-user-lock"></i></div>Formação de Vigilante</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-sync-alt"></i></div>Reciclagem em Dia</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-hard-hat"></i></div>CIPA</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-car"></i></div>Escolta Armada</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-users"></i></div>Segurança para Grandes Eventos</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-ambulance"></i></div>Atendimento Pré-Hospitalar</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-chart-line"></i></div>Liderança e Produtividade</div>
+        <div class="course-item ripple-host"><div class="ci"><i class="fa fa-laptop"></i></div>Pacote Office (básico)</div>
+      </div>
+    </section>
+
+    <section id="competencias">
+      <div class="section-header reveal">
+        <div class="section-label"><i class="fa fa-tasks"></i> Habilidades</div>
+        <h2 class="section-title">Competências</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="skills-grid reveal">
+        <span class="skill-chip"><i class="fa fa-users"></i>Gestão de Equipes</span>
+        <span class="skill-chip"><i class="fa fa-building"></i>Supervisão Patrimonial</span>
+        <span class="skill-chip"><i class="fa fa-door-closed"></i>Controle de Acesso</span>
+        <span class="skill-chip"><i class="fa fa-camera"></i>CFTV</span>
+        <span class="skill-chip"><i class="fa fa-calendar-alt"></i>Gestão de Escalas</span>
+        <span class="skill-chip"><i class="fa fa-clipboard-list"></i>Tratativa de Ocorrências</span>
+        <span class="skill-chip"><i class="fa fa-chalkboard-teacher"></i>Treinamento de Equipes</span>
+        <span class="skill-chip"><i class="fa fa-file-alt"></i>Elaboração de POPs</span>
+        <span class="skill-chip"><i class="fa fa-exclamation-triangle"></i>Prevenção de Riscos</span>
+        <span class="skill-chip"><i class="fa fa-first-aid"></i>Resposta a Emergências</span>
+        <span class="skill-chip"><i class="fa fa-handshake"></i>Interface Administrativa</span>
+        <span class="skill-chip"><i class="fa fa-sync"></i>Continuidade Operacional</span>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Bruno Lopes Fabrício Cavalcante &nbsp;|&nbsp; <a href="mailto:brunocavalcante07@yahoo.com.br">brunocavalcante07@yahoo.com.br</a></p>
+      <p style="margin-top:.4rem;">Rio de Janeiro – RJ &nbsp;|&nbsp; (21) 96851-1221</p>
+    </footer>
+  </div>
+
+  <a href="#hero" id="back-top" aria-label="Voltar ao topo"><i class="fa fa-arrow-up"></i></a>
+
+  <script>
+    (function(){
+      var c=document.getElementById('particles');
+      for(var i=0;i<35;i++){
+        var p=document.createElement('div');
+        p.className='particle';
+        p.style.cssText='left:'+Math.random()*100+'%;width:'+(1+Math.random()*2)+'px;height:'+(1+Math.random()*2)+'px;animation-duration:'+(6+Math.random()*12)+'s;animation-delay:'+(Math.random()*10)+'s;';
+        c.appendChild(p);
+      }
+    })();
+
+    document.getElementById('ham').addEventListener('click',function(){
+      document.getElementById('nav-links').classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(function(a){
+      a.addEventListener('click',function(){document.getElementById('nav-links').classList.remove('open');});
+    });
+
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal, .timeline-item').forEach(function(el){obs.observe(el);});
+
+    var bt=document.getElementById('back-top');
+    window.addEventListener('scroll',function(){bt.classList.toggle('show',window.scrollY>400);},{passive:true});
+
+    function toggleExp(card){
+      var body=card.querySelector('.exp-body');
+      var toggle=card.querySelector('.exp-toggle');
+      var isOpen=body.classList.contains('open');
+      document.querySelectorAll('.exp-body.open').forEach(function(b){
+        b.classList.remove('open');
+        b.closest('.exp-card').querySelector('.exp-toggle').classList.remove('open');
+        b.closest('.exp-card').querySelector('.exp-toggle span').textContent='Ver atividades';
+      });
+      if(!isOpen){body.classList.add('open');toggle.classList.add('open');toggle.querySelector('span').textContent='Fechar';}
+    }
+
+    document.querySelectorAll('.ripple-host').forEach(function(el){
+      el.addEventListener('click',function(e){
+        var r=this.getBoundingClientRect();
+        var size=Math.max(r.width,r.height)*2;
+        var x=e.clientX-r.left-size/2;
+        var y=e.clientY-r.top-size/2;
+        var w=document.createElement('span');
+        w.className='ripple-wave';
+        w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+x+'px;top:'+y+'px;';
+        this.appendChild(w);
+        setTimeout(function(){w.remove();},600);
+      });
+    });
+
+    var sections=document.querySelectorAll('section[id]');
+    var navAs=document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll',function(){
+      var cur='';
+      sections.forEach(function(s){if(window.scrollY>=s.offsetTop-100)cur=s.id;});
+      navAs.forEach(function(a){a.style.color=a.getAttribute('href')==='#'+cur?'var(--accent)':'';});
+    },{passive:true});
+
+    document.getElementById('download-pdf-btn').addEventListener('click',function(){
+      var originalTitle=document.title;
+      document.title='Curriculo_Bruno_Lopes_Fabricio_Cavalcante';
+      window.print();
+      setTimeout(function(){document.title=originalTitle;},700);
+    });
+  </script>
+
+<script src="https://static-s3.skyworkcdn.com/fe/skywork-site-assets/scripts/embed_website.min.js"></script>
+<script async src="https://static-us-img.skywork.ai/prod/website_script/websiteBadge.js?v=3"></script>
+<script async src="https://static-us-img.skywork.ai/prod/website_script/websiteTrack.js?v=3"></script>
+</body>
+</html>
