@@ -648,10 +648,9 @@
     .talent-card:nth-child(3).fade-up { transition-delay: 0.25s; }
 
     /* ============================================================
-       RESPONSIVE — Mobile First (already mobile-first, adjusting up)
+       RESPONSIVE — Mobile First
        ============================================================ */
 
-    /* Tablet and below — hamburger menu */
     @media (max-width: 768px) {
       .hamburger {
         display: flex;
@@ -681,7 +680,6 @@
         font-size: 1.1rem;
       }
 
-      /* Mobile overlay */
       .nav-overlay {
         position: fixed;
         inset: 0;
@@ -854,23 +852,19 @@
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
 
-          // Move a partícula
           p.x += p.vx;
           p.y += p.vy;
 
-          // Rebate nas bordas
           if (p.x < 0) p.x = canvas.width;
           if (p.x > canvas.width) p.x = 0;
           if (p.y < 0) p.y = canvas.height;
           if (p.y > canvas.height) p.y = 0;
 
-          // Desenha o ponto
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = 'rgba(0,191,255,0.45)';
           ctx.fill();
 
-          // Conexões entre partículas
           for (let j = i + 1; j < particles.length; j++) {
             const q = particles[j];
             const dx = p.x - q.x;
@@ -888,7 +882,6 @@
             }
           }
 
-          // Interação com o mouse
           const mdx = p.x - mouseX;
           const mdy = p.y - mouseY;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -902,11 +895,9 @@
             ctx.lineWidth = 0.8;
             ctx.stroke();
 
-            // Leve atração ao mouse
             p.vx += (mdx / mDist) * 0.02;
             p.vy += (mdy / mDist) * 0.02;
 
-            // Amortecimento de velocidade
             const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
             if (speed > 1.2) {
               p.vx = (p.vx / speed) * 1.2;
@@ -955,7 +946,6 @@
 
       navOverlay.addEventListener('click', closeMenu);
 
-      // Fecha menu ao clicar em um link (mobile)
       navLinks.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           if (navLinks.classList.contains('open')) {
@@ -964,7 +954,6 @@
         });
       });
 
-      // Fecha ao pressionar Escape
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && navLinks.classList.contains('open')) {
           closeMenu();
@@ -1019,7 +1008,6 @@
       /* ==========================================================
          API DA VITRINE — Carrega os candidatos aprovados da planilha
          ========================================================== */
-      // AQUI JÁ ESTÁ O SEU LINK OFICIAL!
       const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec'; 
 
       async function carregarVitrine() {
@@ -1061,7 +1049,7 @@
               categoria = 'comercial';
             }
 
-            // O HTML de cada candidato
+            // O HTML de cada candidato (AGORA 100% DINÂMICO E SEM O BLOQUEIO DO POPUP!)
             const cardHtml = `
               <article class="talent-card fade-up" data-category="${categoria}">
                 <div class="talent-card-avatar">
@@ -1073,7 +1061,7 @@
                 <div class="skill-tags">
                   ${tagsHtml}
                 </div>
-                <a href="#" class="card-btn ripple-target" onclick="alert('O currículo completo estará disponível em breve!'); return false;">
+                <a href="./${candidato.nome}/index.html" class="card-btn ripple-target">
                   <i class="fa-solid fa-id-card"></i> Ver Currículo
                 </a>
               </article>
