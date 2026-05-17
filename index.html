@@ -7,12 +7,10 @@
   <meta name="theme-color" content="#0f0f14">
   <title>Fazendo a Nossa Parte | Osorio Ai Labs Social</title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
@@ -126,6 +124,7 @@
       color: var(--text);
       letter-spacing: -0.3px;
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .navbar-logo span {
@@ -609,6 +608,26 @@
       opacity: 0.6;
     }
 
+    /* Links LGPD Rodapé */
+    .footer-lgpd {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-lgpd a {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-lgpd a:hover {
+      opacity: 0.7;
+    }
+
     /* ============================================================
        FADE-UP ANIMATION (Intersection Observer)
        ============================================================ */
@@ -704,23 +723,14 @@
 </head>
 <body>
 
-  <!-- ============================================================
-       PARTICLES CANVAS
-       ============================================================ -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-  <!-- ============================================================
-       NAV OVERLAY (mobile)
-       ============================================================ -->
   <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
-  <!-- ============================================================
-       NAVBAR
-       ============================================================ -->
   <nav class="navbar" role="navigation" aria-label="Navegação principal">
-    <div class="navbar-logo">
+    <a href="./index.html" class="navbar-logo">
       Osorio Ai Labs | <span>Social</span>
-    </div>
+    </a>
 
     <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
       <span></span>
@@ -729,15 +739,12 @@
     </button>
 
     <ul class="nav-links" id="navLinks" role="menubar">
-      <li role="none"><a href="#vitrine" role="menuitem" class="active">Vitrine</a></li>
-      <li role="none"><a href="#como-funciona" role="menuitem">Como Funciona</a></li>
+      <li role="none"><a href="./index.html" role="menuitem" class="active">Vitrine</a></li>
+      <li role="none"><a href="cadastrar.html#como-funciona" role="menuitem">Como Funciona</a></li>
       <li role="none"><a href="cadastrar.html" role="menuitem">Cadastrar</a></li>
     </ul>
   </nav>
 
-  <!-- ============================================================
-       HERO SECTION
-       ============================================================ -->
   <section class="hero fade-up" aria-labelledby="hero-title">
     <div class="hero-badge">
       <i class="fa-solid fa-heart"></i> Fazendo a Nossa Parte
@@ -758,16 +765,12 @@
     </div>
   </section>
 
-  <!-- ============================================================
-       VITRINE / SHOWCASE SECTION
-       ============================================================ -->
   <main class="vitrine fade-up" id="vitrine" aria-labelledby="vitrine-title">
     <div class="vitrine-header">
       <h2 id="vitrine-title">Vitrine de Talentos</h2>
       <p>Explore perfis e encontre o profissional ideal para a sua empresa.</p>
     </div>
 
-    <!-- Filter Pills -->
     <div class="filters" role="group" aria-label="Filtrar por categoria">
       <button class="filter-pill active" data-filter="todos" aria-pressed="true">Todos</button>
       <button class="filter-pill" data-filter="seguranca" aria-pressed="false">Segurança</button>
@@ -776,12 +779,8 @@
       <button class="filter-pill" data-filter="comercial" aria-pressed="false">Comercial</button>
     </div>
 
-    <!-- Cards Grid -->
     <div class="cards-grid" id="cardsGrid">
 
-      <!-- ========================================================
-           CARD 1 — Bruno Cavalcante (Supervisor de Segurança)
-           ======================================================== -->
       <article class="talent-card fade-up" data-category="seguranca" aria-labelledby="card1-name">
         <span class="card-badge">Destaque</span>
         <div class="talent-card-avatar">
@@ -802,9 +801,6 @@
         </a>
       </article>
 
-      <!-- ========================================================
-           CARD 2 — Amanda Oliveira (Desenvolvedora Front-end)
-           ======================================================== -->
       <article class="talent-card fade-up" data-category="tecnologia" aria-labelledby="card2-name">
         <div class="talent-card-avatar">
           <i class="fa-solid fa-code"></i>
@@ -824,9 +820,6 @@
         </a>
       </article>
 
-      <!-- ========================================================
-           CARD 3 — Ricardo Mendes (Analista Comercial)
-           ======================================================== -->
       <article class="talent-card fade-up" data-category="comercial" aria-labelledby="card3-name">
         <div class="talent-card-avatar">
           <i class="fa-solid fa-chart-line"></i>
@@ -849,9 +842,6 @@
     </div>
   </main>
 
-  <!-- ============================================================
-       FOOTER
-       ============================================================ -->
   <footer class="footer fade-up">
     <div class="footer-message">
       <i class="fa-solid fa-hand-holding-heart footer-icon"></i>
@@ -861,12 +851,15 @@
     <a href="https://www.osorioailabs.com.br" target="_blank" rel="noopener noreferrer" class="footer-link">
       <i class="fa-solid fa-arrow-up-right-from-square"></i> www.osorioailabs.com.br
     </a>
-    <p class="footer-copy">&copy; 2026 Osorio Ai Labs. Todos os direitos reservados.</p>
+    
+    <div class="footer-lgpd">
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+
+    <p class="footer-copy" style="margin-top: 15px;">&copy; 2026 Osorio Ai Labs. Todos os direitos reservados.</p>
   </footer>
 
-  <!-- ============================================================
-       SCRIPTS
-       ============================================================ -->
   <script>
     (function () {
       'use strict';
