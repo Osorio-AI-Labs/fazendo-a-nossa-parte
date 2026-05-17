@@ -209,22 +209,21 @@
         const response = await fetch(SCRIPT_URL);
         const aprovados = await response.json();
         
-        const perfil = aprovados.find(c => c.nome && c.nome.trim().toLowerCase() === nomeCandidato);
+        const perfil = aprovados.find(c => c.nome && String(c.nome).trim().toLowerCase() === nomeCandidato);
 
         if (perfil) {
           preencherDados(perfil);
           document.getElementById('loading-screen').style.display = 'none';
           document.getElementById('site-wrapper').style.display = 'block';
         } else {
-          // MOSTRA EXATAMENTE O QUE A API DEVOLVEU
           let nomesNaAPI = aprovados.map(c => c.nome).join(', ');
           document.getElementById('debug-info').innerHTML = 
             `<strong>Buscando por:</strong> "${nomeCandidato}"<br><br>` +
-            `<strong>Nomes encontrados na sua Planilha (API):</strong><br> ${nomesNaAPI || "Nenhum nome aprovado encontrado. Verifique se o Apps Script foi atualizado."}`;
+            `<strong>Nomes encontrados na sua Planilha (API):</strong><br> ${nomesNaAPI || "Nenhum nome aprovado encontrado."}`;
           mostrarErro();
         }
       } catch (error) {
-        document.getElementById('debug-info').innerHTML = `<strong>ERRO DE LIGAÇÃO:</strong> ${error.message}<br>Verifique se o seu Apps Script está implementado para "Qualquer Pessoa".`;
+        document.getElementById('debug-info').innerHTML = `<strong>ERRO DE LIGAÇÃO:</strong> ${error.message}`;
         mostrarErro();
       }
     }
@@ -235,25 +234,31 @@
     }
 
     function preencherDados(p) {
-      const nomes = p.nome.split(' ');
+      const nomeStr = String(p.nome || "Não Informado");
+      const nomes = nomeStr.split(' ');
       document.getElementById('cv-nome').innerHTML = `${nomes[0]} <br><span class="accent">${nomes.slice(1).join(' ')}</span>`;
-      document.getElementById('footer-nome').textContent = p.nome;
-      document.getElementById('page-title').textContent = `${p.nome} - Currículo`;
+      document.getElementById('footer-nome').textContent = nomeStr;
+      document.getElementById('page-title').textContent = `${nomeStr} - Currículo`;
       document.getElementById('cv-localidade').textContent = p.cidade || "Local não informado";
       
-      if (p.foto && p.foto.startsWith("http")) {
-          document.getElementById('cv-img').src = p.foto;
+      const fotoStr = String(p.foto || "");
+      if (fotoStr.startsWith("http")) {
+          document.getElementById('cv-img').src = fotoStr;
           document.getElementById('cv-img').style.display = 'block';
           document.getElementById('cv-icon').style.display = 'none';
       }
 
-      document.getElementById('txt-whatsapp').textContent = p.whatsapp;
-      document.getElementById('link-whatsapp').href = `https://wa.me/55${p.whatsapp.replace(/\D/g,'')}`;
-      document.getElementById('txt-email').textContent = p.email;
-      document.getElementById('link-email').href = `mailto:${p.email}`;
+      // CORREÇÃO CRUCIAL AQUI: Converter forçosamente para String
+      const whatsappStr = String(p.whatsapp || "");
+      document.getElementById('txt-whatsapp').textContent = whatsappStr || "WhatsApp";
+      document.getElementById('link-whatsapp').href = `https://wa.me/55${whatsappStr.replace(/\D/g,'')}`;
+      
+      const emailStr = String(p.email || "");
+      document.getElementById('txt-email').textContent = emailStr || "E-mail";
+      document.getElementById('link-email').href = `mailto:${emailStr}`;
       
       if (p.tags) {
-          p.tags.split(',').forEach(tag => {
+          String(p.tags).split(',').forEach(tag => {
               document.getElementById('cv-tags').innerHTML += `<span class="role-tag">${tag.trim()}</span>`;
           });
       }
@@ -262,18 +267,18 @@
       document.getElementById('txt-escola').textContent = "Educação"; 
 
       if (p.formacao) {
-          p.formacao.split(',').forEach(curso => {
+          String(p.formacao).split(',').forEach(curso => {
               document.getElementById('cv-cursos').innerHTML += `<div class="course-item"><div class="ci"><i class="fa fa-check"></i></div><span>${curso.trim()}</span></div>`;
           });
       }
       if (p.competencias) {
-          p.competencias.split(',').forEach(comp => {
+          String(p.competencias).split(',').forEach(comp => {
               document.getElementById('cv-competencias').innerHTML += `<span class="skill-chip"><i class="fa fa-star"></i>${comp.trim()}</span>`;
           });
       }
 
       const tContainer = document.getElementById('cv-timeline');
-      const historicoData = p.historico || "";
+      const historicoData = String(p.historico || "");
       
       if (historicoData.trim() !== "") {
           const pedaços = historicoData.split(/\[Experiência \d+\]/).filter(texto => texto.trim() !== '');
