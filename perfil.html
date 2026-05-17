@@ -1,174 +1,445 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currículo Interativo | Osorio AI Labs Social</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currículo Interativo | Osorio AI Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   
   <style>
-    /* MESMO DESIGN SYSTEM DOS OUTROS FICHEIROS */
+    /* ============================================================
+       MESMO DESIGN PREMIUM DO BRUNO CAVALCANTE
+       ============================================================ */
     :root {
-      --bg-deep: #0f0f14; --bg-base: #1a1a24; --card-bg: #1e1e2c; --card-light: #252535;
-      --accent: #00bfff; --accent2: #0080c8; --text: #e8e8f0; --text-muted: #8888aa;
-      --border: rgba(0,191,255,0.12); --radius: 18px;
+      --bg-deep:      #0f0f14; --bg-base:      #1a1a24; --card-bg:      #1e1e2c; --card-light:   #252535;
+      --shadow-dark:  rgba(0,0,0,0.6); --shadow-light: rgba(255,255,255,0.06);
+      --accent:       #00bfff; --accent2:      #0080c8; --accent-glow:  rgba(0,191,255,0.25);
+      --gold:         #ffd700; --text:         #e8e8f0; --text-muted:   #8888aa;
+      --border:       rgba(0,191,255,0.12); --radius:       18px; --radius-sm:    10px; --radius-pill:  50px;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: var(--bg-deep); color: var(--text); min-height: 100vh; padding: 40px 20px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Roboto', sans-serif; background: var(--bg-deep); color: var(--text); min-height: 100vh; overflow-x: hidden; position: relative; }
     
-    /* Layout do Currículo Universal */
-    .cv-container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      display: none; /* Escondido até carregar os dados */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,100,180,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 85%, rgba(0,191,255,0.10) 0%, transparent 55%), linear-gradient(135deg, #0a0a12 0%, #101020 50%, #0d1020 100%);
     }
-
-    .cv-header {
-      background: linear-gradient(135deg, rgba(0,191,255,0.1) 0%, rgba(0,128,200,0.05) 100%);
-      padding: 40px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background-image: linear-gradient(rgba(0,191,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,191,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px; animation: gridPulse 8s ease-in-out infinite;
     }
-
-    .avatar {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: var(--card-light); border: 3px solid var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem; color: var(--accent); margin: 0 auto 20px;
-    }
-
-    .cv-header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
-    .cv-header .cargo { color: var(--accent); font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; }
+    @keyframes gridPulse { 0%,100%{opacity:.5}50%{opacity:1} }
+    #particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    .particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;opacity:0;animation:floatUp linear infinite}
+    @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.4}100%{transform:translateY(-20px) scale(1.5);opacity:0}}
     
-    .contact-bar { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-    .contact-item { background: var(--card-light); padding: 8px 16px; border-radius: 999px; font-size: 0.85rem; border: 1px solid var(--border); }
-    .contact-item i { color: var(--accent); margin-right: 5px; }
-
-    .cv-body { padding: 40px; }
-    .cv-section { margin-bottom: 35px; }
-    .cv-section h2 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
-    
-    .cv-text { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); white-space: pre-line; }
-
-    /* Botão Voltar */
-    .btn-voltar {
-      position: fixed; top: 24px; left: 24px;
-      padding: 10px 20px; background: rgba(15, 15, 20, 0.8); border: 1px solid var(--border);
-      border-radius: 999px; color: #fff; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
-      backdrop-filter: blur(10px); z-index: 100; transition: all 0.3s;
+    /* Telas de Loading e Erro */
+    #loading-screen, #error-screen {
+      position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
     }
-    .btn-voltar:hover { background: var(--accent); border-color: var(--accent); transform: translateX(-5px); }
+    #loading-screen i { font-size: 3rem; color: var(--accent); margin-bottom: 20px; }
+    #error-screen i { font-size: 4rem; color: #ff3366; margin-bottom: 20px; }
+    .btn-voltar-erro { margin-top: 20px; display: inline-block; padding: 10px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 50px; font-weight: bold; }
 
-    /* Loading state */
-    #loading { text-align: center; margin-top: 100px; color: var(--accent); font-size: 1.2rem; }
-    #erro { text-align: center; margin-top: 100px; color: #ff4444; display: none; }
+    /* Layout do Site */
+    .site-wrapper{position:relative;z-index:1; display: none;} /* Escondido até carregar dados */
+    
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(15,15,20,.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+    .nav-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.1rem;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+    .nav-logo span{color:var(--text)}
+    .nav-links{display:flex;gap:.25rem}
+    .nav-links a{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:all .3s ease;position:relative;overflow:hidden}
+    .nav-links a::before{content:'';position:absolute;inset:0;background:var(--accent-glow);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;border-radius:inherit}
+    .nav-links a:hover{color:var(--accent)}
+    .nav-links a:hover::before{transform:scaleX(1)}
+    
+    #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 2rem 4rem;text-align:center;position:relative}
+    .hero-photo-frame{margin-bottom:1.1rem;position:relative}
+    .hero-photo-ring{position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(0,191,255,.22);box-shadow:0 0 35px rgba(0,191,255,.12);animation:ringPulse 3.2s ease-in-out infinite}
+    @keyframes ringPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.04);opacity:1}}
+    
+    .hero-avatar{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--card-bg),var(--card-light));border:3px solid var(--accent);box-shadow:0 0 0 6px rgba(0,191,255,.12),0 0 40px rgba(0,191,255,.3);display:flex;align-items:center;justify-content:center;font-size:4rem;margin:0 auto 1.8rem;overflow:hidden;position:relative; color: var(--accent);}
+    .hero-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    
+    .hero-name{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.8rem);line-height:1.1;letter-spacing:-1px;color:var(--text);text-shadow:0 0 40px rgba(0,191,255,.3)}
+    .hero-name .accent{color:var(--accent)}
+    .hero-subtitle{font-size:clamp(.85rem,2vw,1rem);color:var(--text-muted);margin-top:.6rem;letter-spacing:3px;text-transform:uppercase;}
+    
+    .hero-role-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:1.8rem;}
+    .role-tag{padding:7px 18px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;background:var(--card-bg);color:var(--accent);border:1px solid var(--border);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark); cursor:default}
+    
+    .hero-contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:2rem;}
+    .contact-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:var(--radius-pill);font-size:.8rem;font-weight:500;text-decoration:none;color:var(--text);background:var(--card-bg);border:1px solid var(--border);transition:all .25s ease}
+    .contact-chip i{color:var(--accent);font-size:.85rem}
+    .contact-chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);}
+    
+    .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;margin-top:2.5rem;}
+    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:var(--radius-pill);font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s ease;}
+    .btn-primary{color:#000;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 24px var(--accent-glow);}
+    .btn-secondary{color:var(--text);background:var(--card-bg);border:1px solid var(--border);}
+    
+    .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
+    .scroll-indicator i{font-size:1.2rem;color:var(--accent)}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    
+    section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+    .section-header{text-align:center;margin-bottom:3rem}
+    .section-label{display:inline-flex;align-items:center;gap:8px;padding:5px 18px;border-radius:var(--radius-pill);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:rgba(0,191,255,.07);margin-bottom:.8rem}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--text)}
+    .section-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--accent),transparent);margin:.8rem auto 0;border-radius:2px}
+    
+    .card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:2rem;box-shadow:-6px -6px 16px var(--shadow-light),6px 6px 16px var(--shadow-dark);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+    .card p {font-size:1rem;line-height:1.85;color:var(--text-muted); white-space: pre-line;}
+    
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),transparent)}
+    .timeline-item{position:relative;margin-bottom:2.2rem;}
+    .timeline-dot{position:absolute;left:-2.45rem;top:12px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent-glow);border:2px solid var(--bg-deep)}
+    .exp-card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;box-shadow:-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark); cursor: pointer;}
+    .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem}
+    .exp-company{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;color:var(--text)}
+    .exp-period{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.72rem;font-weight:600;color:var(--accent)}
+    .exp-role{font-size:.85rem;color:var(--text-muted);margin-top:4px}
+    .exp-body{overflow:hidden;max-height:0;transition:max-height .45s ease,opacity .35s;opacity:0}
+    .exp-body.open{max-height:800px;opacity:1}
+    .exp-body ul{list-style:none;padding:0;margin-top:1rem;display:flex;flex-direction:column;gap:6px}
+    .exp-body li{display:flex;align-items:flex-start;gap:10px;font-size:.85rem;color:var(--text-muted);line-height:1.5}
+    .exp-body li::before{content:'▶';color:var(--accent);flex-shrink:0;margin-top:1px; font-size: 0.7rem;}
+    .exp-toggle{margin-top:.8rem;display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--accent);font-weight:600;cursor:pointer;}
+    .exp-toggle i{transition:transform .35s ease}
+    .exp-toggle.open i{transform:rotate(180deg)}
+    
+    .skills-grid{display:flex;flex-wrap:wrap;justify-content: center; gap:.75rem}
+    .skill-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-pill);background:var(--card-bg);border:1px solid var(--border);font-size:.8rem;font-weight:500;color:var(--text);}
+    .skill-chip i{color:var(--accent);font-size:.8rem}
+    
+    .courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+    .course-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--card-bg);border:1px solid var(--border);font-size:.82rem;color:var(--text);}
+    .course-item .ci{width:32px;height:32px;border-radius:50%;background:rgba(0,191,255,.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .course-item .ci i{color:var(--accent);font-size:.8rem}
+    
+    footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;position:relative;z-index:1;color:var(--text-muted);font-size:.78rem}
+    footer a{color:var(--accent);text-decoration:none}
+    
+    @media(max-width:640px){
+      .nav-links{display:none;}
+      .timeline{padding-left:1.2rem}
+      .timeline-dot{left:-1.65rem}
+    }
   </style>
 </head>
 <body>
-
-  <a href="index.html" class="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar à Vitrine</a>
-
-  <div id="loading"><i class="fa-solid fa-spinner fa-spin"></i> A montar o currículo interativo...</div>
+  <div id="particles"></div>
   
-  <div id="erro">
-    <h2><i class="fa-solid fa-circle-exclamation"></i> Ops! Talento não encontrado.</h2>
-    <p>O currículo que procura pode ter sido removido ou o link está incorreto.</p>
+  <div id="loading-screen">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    <h2 style="font-family:'Montserrat', sans-serif;">A gerar currículo interativo...</h2>
+    <p style="color: var(--text-muted); margin-top: 10px;">A aceder aos dados seguros da Osorio AI Labs.</p>
   </div>
 
-  <main class="cv-container" id="cvContainer">
-    <header class="cv-header">
-      <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
-      <h1 id="cvNome">Carregando...</h1>
-      <p class="cargo" id="cvCargo">Carregando...</p>
-      
-      <div class="contact-bar">
-        <div class="contact-item"><i class="fa-solid fa-location-dot"></i> <span id="cvCidade">...</span></div>
-        <div class="contact-item"><i class="fa-solid fa-envelope"></i> <span id="cvEmail">...</span></div>
-        <div class="contact-item" id="cvWhatsappBox"><i class="fa-brands fa-whatsapp"></i> <span id="cvWhatsapp">...</span></div>
+  <div id="error-screen" style="display: none;">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <h2 style="font-family:'Montserrat', sans-serif;">Talento não encontrado</h2>
+    <p style="color: var(--text-muted); margin-top: 10px; max-width: 400px;">Não foi possível carregar os dados deste profissional. O perfil pode ter sido removido ou o link está incorreto.</p>
+    <a href="index.html" class="btn-voltar-erro">Voltar à Vitrine</a>
+  </div>
+
+  <div class="site-wrapper" id="site-wrapper">
+    <nav>
+      <a href="index.html" class="nav-logo" style="text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> <span>Voltar à Vitrine</span></a>
+      <div class="nav-links" id="nav-links">
+        <a href="#hero"><i class="fa fa-home"></i>Início</a>
+        <a href="#resumo"><i class="fa fa-user"></i>Resumo</a>
+        <a href="#experiencia"><i class="fa fa-briefcase"></i>Experiência</a>
+        <a href="#formacao"><i class="fa fa-graduation-cap"></i>Formação</a>
       </div>
-    </header>
+    </nav>
 
-    <div class="cv-body">
-      <section class="cv-section">
-        <h2><i class="fa-solid fa-user"></i> Resumo Profissional</h2>
-        <p class="cv-text" id="cvResumo">...</p>
-      </section>
+    <section id="hero">
+      <div class="hero-badge"><i class="fa fa-shield-alt"></i> <span id="hero-badge-text">Profissional Verificado</span></div>
+      <div class="hero-photo-frame">
+        <div class="hero-photo-ring"></div>
+        <div class="hero-avatar">
+            <img id="hero-img" src="" style="display:none;" onerror="this.style.display='none'; document.getElementById('hero-icon').style.display='block';">
+            <i id="hero-icon" class="fa-solid fa-user-tie"></i>
+        </div>
+      </div>
+      <h1 class="hero-name" id="hero-name">NOME <span class="accent">SOBRENOME</span></h1>
+      <p class="hero-subtitle" id="hero-location">Cidade – Estado</p>
+      
+      <div class="hero-role-tags" id="hero-tags">
+        </div>
+      
+      <div class="hero-contacts">
+        <a id="link-whatsapp" href="#" target="_blank" class="contact-chip"><i class="fab fa-whatsapp"></i><span id="txt-whatsapp">(00) 00000-0000</span></a>
+        <a id="link-email" href="#" class="contact-chip"><i class="fa fa-envelope"></i><span id="txt-email">email@email.com</span></a>
+        <a id="link-linkedin" href="#" target="_blank" class="contact-chip" style="display:none;"><i class="fab fa-linkedin"></i>LinkedIn</a>
+      </div>
+      
+      <div class="hero-actions">
+        <a href="#resumo" class="btn-primary"><i class="fa fa-eye"></i>Ler Perfil</a>
+        <button type="button" class="btn-secondary" onclick="window.print()"><i class="fa fa-file-pdf"></i>Baixar PDF</button>
+      </div>
+      <div class="scroll-indicator"><span>Role</span><i class="fa fa-chevron-down"></i></div>
+    </section>
 
-      <section class="cv-section">
-        <h2><i class="fa-solid fa-briefcase"></i> Histórico Profissional</h2>
-        <p class="cv-text" id="cvHistorico">...</p>
-      </section>
+    <section id="resumo">
+      <div class="section-header">
+        <div class="section-label"><i class="fa fa-user-tie"></i> Perfil</div>
+        <h2 class="section-title">Resumo Profissional</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="card">
+        <p id="resumo-text">Carregando resumo...</p>
+      </div>
+    </section>
 
-      <section class="cv-section">
-        <h2><i class="fa-solid fa-graduation-cap"></i> Formação Académica</h2>
-        <p class="cv-text" id="cvFormacao">...</p>
-      </section>
+    <section id="experiencia">
+      <div class="section-header">
+        <div class="section-label"><i class="fa fa-briefcase"></i> Histórico</div>
+        <h2 class="section-title">Experiência Profissional</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="timeline" id="timeline-container">
+      </div>
+    </section>
 
-      <section class="cv-section">
-        <h2><i class="fa-solid fa-lightbulb"></i> Competências e Cursos</h2>
-        <p class="cv-text" id="cvCompetencias">...</p>
-      </section>
-    </div>
-  </main>
+    <section id="formacao">
+      <div class="section-header">
+        <div class="section-label"><i class="fa fa-graduation-cap"></i> Educação</div>
+        <h2 class="section-title">Formação Acadêmica</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="card" style="margin-bottom: 2rem; display:flex; align-items:center; gap: 20px;">
+          <div style="font-size: 2.5rem; color: var(--accent);"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size: 1.1rem; color: var(--text); margin-bottom: 5px;" id="txt-curso">Curso</h3>
+              <p style="color: var(--accent); font-weight: bold; font-size: 0.9rem;" id="txt-escola">Escolaridade</p>
+          </div>
+      </div>
+
+      <div class="section-header" style="margin-top: 4rem;">
+        <div class="section-label"><i class="fa fa-certificate"></i> Qualificações</div>
+        <h2 class="section-title">Cursos Complementares</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="courses-grid" id="cursos-grid">
+         </div>
+    </section>
+
+    <section id="competencias">
+      <div class="section-header">
+        <div class="section-label"><i class="fa fa-tasks"></i> Habilidades</div>
+        <h2 class="section-title">Competências</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="skills-grid" id="skills-grid">
+        </div>
+    </section>
+
+    <footer>
+      <p>© 2026 <span id="footer-name">Candidato</span> &nbsp;|&nbsp; Gerado pela Osorio AI Labs</p>
+    </footer>
+  </div>
 
   <script>
-    // A SUA URL DO APPS SCRIPT
+    // =========================================================================
+    // ANIMAÇÃO DE FUNDO (PARTÍCULAS)
+    // =========================================================================
+    (function(){
+      var c=document.getElementById('particles');
+      for(var i=0;i<35;i++){
+        var p=document.createElement('div'); p.className='particle';
+        p.style.cssText='left:'+Math.random()*100+'%;width:'+(1+Math.random()*2)+'px;height:'+(1+Math.random()*2)+'px;animation-duration:'+(6+Math.random()*12)+'s;animation-delay:'+(Math.random()*10)+'s;';
+        c.appendChild(p);
+      }
+    })();
+
+    // =========================================================================
+    // O CÉREBRO: LER A PLANILHA E DESENHAR O CURRÍCULO
+    // =========================================================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec';
 
     async function carregarPerfil() {
-      // Lê o nome que veio na URL (ex: perfil.html?talento=Fabiano Osorio)
+      // Descobre quem foi clicado na Vitrine
       const urlParams = new URLSearchParams(window.location.search);
       const nomeCandidato = urlParams.get('talento');
 
       if (!nomeCandidato) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('erro').style.display = 'block';
+        mostrarErro();
         return;
       }
 
       try {
         const response = await fetch(SCRIPT_URL);
         const aprovados = await response.json();
-
-        // Procura exatamente o candidato clicado
+        
+        // Encontra a linha exata deste candidato
         const perfil = aprovados.find(c => c.nome === nomeCandidato);
 
         if (perfil) {
-          // Esconde o loading e mostra o CV
-          document.getElementById('loading').style.display = 'none';
-          document.getElementById('cvContainer').style.display = 'block';
-
-          // Preenche os dados HTML com os dados da folha de cálculo
-          document.getElementById('cvNome').textContent = perfil.nome;
-          document.getElementById('cvCargo').textContent = perfil.cargo;
-          document.getElementById('cvCidade').textContent = perfil.cidade;
-          document.getElementById('cvEmail').textContent = perfil.email;
-          document.getElementById('cvWhatsapp').textContent = perfil.whatsapp;
-          document.getElementById('cvResumo').textContent = perfil.resumo;
-          document.getElementById('cvHistorico').textContent = perfil.historico || "Não informado";
-          document.getElementById('cvFormacao').textContent = perfil.formacao || "Não informado";
-          document.getElementById('cvCompetencias').textContent = perfil.competencias || "Não informado";
+          preencherDados(perfil);
           
+          // Troca os ecrãs: Esconde o loading, mostra o site lindo!
+          document.getElementById('loading-screen').style.display = 'none';
+          document.getElementById('site-wrapper').style.display = 'block';
         } else {
-          // Se não encontrou o nome nos aprovados
-          document.getElementById('loading').style.display = 'none';
-          document.getElementById('erro').style.display = 'block';
+          mostrarErro();
         }
       } catch (error) {
-        console.error("Erro:", error);
-        document.getElementById('loading').innerHTML = "Erro de ligação. Tente atualizar a página.";
+        console.error("Erro ao buscar dados:", error);
+        mostrarErro();
       }
     }
 
-    // Arranca quando a página carrega
+    function mostrarErro() {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('error-screen').style.display = 'flex';
+    }
+
+    function preencherDados(p) {
+      // 1. Cabeçalho (Nome e Estilo)
+      const nomes = p.nome.split(' ');
+      const primeiroNome = nomes[0];
+      const restoNome = nomes.slice(1).join(' ');
+      document.getElementById('hero-name').innerHTML = `${primeiroNome} <span class="accent">${restoNome}</span>`;
+      document.getElementById('footer-name').textContent = p.nome;
+      document.getElementById('document').title = `Currículo | ${p.nome}`;
+
+      document.getElementById('hero-badge-text').textContent = p.cargo || "Profissional";
+      document.getElementById('hero-location').textContent = p.cidade || "Localização não informada";
+      
+      // 2. Foto Inteligente
+      if (p.foto && p.foto.trim() !== "" && p.foto.startsWith("http")) {
+          document.getElementById('hero-img').src = p.foto;
+          document.getElementById('hero-img').style.display = 'block';
+          document.getElementById('hero-icon').style.display = 'none';
+      }
+
+      // 3. Contactos
+      document.getElementById('txt-whatsapp').textContent = p.whatsapp;
+      document.getElementById('link-whatsapp').href = `https://wa.me/55${p.whatsapp.replace(/\D/g,'')}`;
+      document.getElementById('txt-email').textContent = p.email;
+      document.getElementById('link-email').href = `mailto:${p.email}`;
+      if (p.linkedin && p.linkedin.trim() !== "") {
+          const lk = document.getElementById('link-linkedin');
+          lk.style.display = 'inline-flex';
+          lk.href = p.linkedin;
+      }
+
+      // 4. Tags de Cargo
+      if (p.tags) {
+          const tagsContainer = document.getElementById('hero-tags');
+          p.tags.split(',').forEach(tag => {
+              tagsContainer.innerHTML += `<span class="role-tag">${tag.trim()}</span>`;
+          });
+      }
+
+      // 5. Resumo
+      document.getElementById('resumo-text').textContent = p.resumo || "Não informado.";
+
+      // 6. Educação
+      document.getElementById('txt-curso').textContent = p.formacao || "Formação Principal"; // A formacao da planilha vai para aqui
+      // No script antigo escolaridade nao estava a ser mapeada no doGet. Vamos assumir que vem no formacao ou deixar genérico.
+      document.getElementById('txt-escola').textContent = "Ensino / Instituição"; 
+
+      // 7. Cursos Complementares
+      if (p.formacao && p.formacao !== "") {
+          const cGrid = document.getElementById('cursos-grid');
+          // Divide por vírgulas
+          p.formacao.split(',').forEach(curso => {
+              cGrid.innerHTML += `<div class="course-item"><div class="ci"><i class="fa fa-check"></i></div><span>${curso.trim()}</span></div>`;
+          });
+      } else {
+          document.getElementById('cursos-grid').innerHTML = "<p style='color:var(--text-muted)'>Nenhum curso complementar informado.</p>";
+      }
+
+      // 8. Competências
+      if (p.competencias) {
+          const sGrid = document.getElementById('skills-grid');
+          p.competencias.split(',').forEach(comp => {
+              sGrid.innerHTML += `<span class="skill-chip"><i class="fa fa-star"></i>${comp.trim()}</span>`;
+          });
+      }
+
+      // 9. Histórico Profissional (Linha do Tempo Mágica)
+      const tContainer = document.getElementById('timeline-container');
+      if (p.historico && p.historico.trim() !== "") {
+          // O script tenta separar a string que criámos "[Experiência 1] Empresa: X | Cargo: Y..."
+          const pedaços = p.historico.split(/\[Experiência \d+\]/).filter(texto => texto.trim() !== '');
+          
+          if (pedaços.length > 0) {
+              pedaços.forEach(expText => {
+                  // Tenta extrair os bocadinhos com Regex ou divide pelo '|'
+                  let empresa = "Empresa"; let cargo = "Cargo"; let periodo = "Período"; let ativ = expText;
+                  
+                  const empMatch = expText.match(/Empresa:\s*(.*?)\s*\|/);
+                  const carMatch = expText.match(/Cargo:\s*(.*?)\s*\|/);
+                  const perMatch = expText.match(/Período:\s*(.*?)\s*\|/);
+                  const atvMatch = expText.match(/Atividades:\s*(.*)/is);
+
+                  if(empMatch) empresa = empMatch[1];
+                  if(carMatch) cargo = carMatch[1];
+                  if(perMatch) periodo = perMatch[1];
+                  if(atvMatch) ativ = atvMatch[1];
+
+                  const itemHtml = `
+                    <div class="timeline-item visible">
+                      <div class="timeline-dot"></div>
+                      <div class="exp-card" onclick="toggleExp(this)">
+                        <div class="exp-header">
+                          <div>
+                            <div class="exp-company">${empresa}</div>
+                            <div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> ${cargo}</div>
+                          </div>
+                          <span class="exp-period"><i class="fa fa-calendar"></i> ${periodo}</span>
+                        </div>
+                        <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
+                        <div class="exp-body">
+                          <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; white-space: pre-line;">${ativ}</p>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  tContainer.innerHTML += itemHtml;
+              });
+          } else {
+              tContainer.innerHTML = `<p style="color:var(--text-muted);">${p.historico}</p>`;
+          }
+      } else {
+          tContainer.innerHTML = "<p style='color:var(--text-muted)'>Nenhum histórico profissional registado.</p>";
+      }
+    }
+
+    // =========================================================================
+    // FUNÇÕES INTERATIVAS (Abrir/Fechar Acordeão de Experiência)
+    // =========================================================================
+    function toggleExp(card){
+      var body = card.querySelector('.exp-body');
+      var toggle = card.querySelector('.exp-toggle');
+      var isOpen = body.classList.contains('open');
+      
+      // Fecha os outros
+      document.querySelectorAll('.exp-body.open').forEach(function(b){
+        b.classList.remove('open');
+        b.closest('.exp-card').querySelector('.exp-toggle').classList.remove('open');
+        b.closest('.exp-card').querySelector('.exp-toggle span').textContent='Ver atividades';
+      });
+      
+      // Abre o clicado
+      if(!isOpen){
+          body.classList.add('open');
+          toggle.classList.add('open');
+          toggle.querySelector('span').textContent='Fechar';
+      }
+    }
+
+    // Iniciar Carregamento
     window.addEventListener('DOMContentLoaded', carregarPerfil);
   </script>
 </body>
