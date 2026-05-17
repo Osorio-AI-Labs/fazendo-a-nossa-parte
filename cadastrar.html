@@ -236,7 +236,7 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       max-width: 1100px;
-      margin: 0 auto;
+      margin: 0 auto 32px;
     }
 
     .passo-card {
@@ -289,6 +289,50 @@
       color: var(--accent);
       margin-bottom: 14px;
       display: block;
+    }
+
+    /* Banner de Empresas */
+    .empresa-banner {
+      background: rgba(30, 30, 44, 0.6);
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 650px;
+      margin: 40px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-align: left;
+    }
+
+    .empresa-banner p {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .empresa-banner p strong {
+      color: var(--accent);
+    }
+
+    .btn-empresa-trigger {
+      padding: 10px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #fff;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .btn-empresa-trigger:hover {
+      background: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
     }
 
     /* ============================================================
@@ -567,7 +611,7 @@
     }
 
     /* ============================================================
-       MENSAGEM DE SUCESSO (Toast)
+       TOASTS & MODALS OVERLAYS
        ============================================================ */
     .toast-overlay {
       position: fixed;
@@ -598,6 +642,56 @@
       width: 90%;
       box-shadow: 0 0 48px var(--accent-glow), 0 16px 48px rgba(0,0,0,0.5);
       animation: toastIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    /* Modal específico para Empresas */
+    .modal-card-empresa {
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: left;
+      max-width: 550px;
+      width: 90%;
+      box-shadow: 0 0 48px var(--accent-glow), 0 16px 48px rgba(0,0,0,0.5);
+      animation: toastIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .modal-card-empresa h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-card-empresa p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .modal-card-empresa ul {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .modal-card-empresa ul li {
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--text);
+    }
+
+    .modal-card-empresa ul li i {
+      color: var(--accent);
+      margin-top: 4px;
     }
 
     @keyframes toastIn {
@@ -769,6 +863,11 @@
       .form-grid.col-3 {
         grid-template-columns: 1fr;
       }
+
+      .empresa-banner {
+        flex-direction: column;
+        text-align: center;
+      }
     }
 
     @media (max-width: 480px) {
@@ -853,6 +952,15 @@
           </p>
         </article>
       </div>
+
+      <div class="empresa-banner fade-up">
+        <div>
+          <p><strong>É uma Empresa Parceira?</strong> Saiba como o ecossistema funciona para recrutadores e conheça as vantagens exclusivas.</p>
+        </div>
+        <button type="button" class="btn-empresa-trigger ripple-target" id="btnEmpresaModal">
+          <i class="fa-solid fa-building-shield"></i> Ver Benefícios
+        </button>
+      </div>
     </section>
 
     <section class="cadastro fade-up" id="cadastrar" aria-labelledby="cadastro-title">
@@ -930,7 +1038,7 @@
 
             <div class="form-group">
               <label for="tags"><i class="fa-solid fa-tags"></i> Tags de Perfil</label>
-              <input type="text" id="tags" name="tags" placeholder="Ex: Liderança, Vendas, Tecnologia" required>
+              <input type="text" id="tags" name="tags" placeholder="Ex: Liderança, Vendas, Technology" required>
             </div>
 
             <div class="form-group">
@@ -1005,7 +1113,7 @@
                 <label for="anoSaida2">Ano Saída</label>
                 <input type="text" id="anoSaida2" name="anoSaida2" placeholder="Ex: 2020">
               </div>
-              <div class="form-grid full">
+              <div class="form-group full">
                 <label for="atividades2">Principais Atividades</label>
                 <textarea id="atividades2" name="atividades2" placeholder="Descreva suas principais responsabilidades e conquistas..." rows="3"></textarea>
               </div>
@@ -1046,7 +1154,7 @@
 
         <fieldset class="form-etapa">
           <legend><i class="fa-solid fa-lightbulb"></i> Etapa 5 — Competências e Cursos</legend>
-          <p class="etapa-desc">Habilidades técnicas, comportamentais e cursos que complementam seu perfil.</p>
+          <p class="etapa-desc">Competências técnicas, comportamentais e cursos que complementam seu perfil.</p>
 
           <div class="form-grid">
             <div class="form-group full">
@@ -1090,6 +1198,28 @@
       <h3>Currículo recebido com sucesso!</h3>
       <p>Seu perfil será processado e em breve entrará na nossa Vitrine de Talentos. Fique de olho no seu e-mail!</p>
       <button class="toast-btn" id="toastClose">Entendi</button>
+    </div>
+  </div>
+
+  <div class="toast-overlay" id="modalEmpresaOverlay" aria-hidden="true">
+    <div class="modal-card-empresa" role="dialog" aria-modal="true" aria-labelledby="modalEmpresaTitle">
+      <h3 id="modalEmpresaTitle"><i class="fa-solid fa-handshake"></i> Conexão Corporativa</h3>
+      <p>
+        Todas as empresas parceiras da <strong>Osorio AI Labs</strong> recebem um alerta automatizado em tempo real com as informações consolidadas sempre que um novo profissional de destaque finaliza seu cadastro em nossa base.
+      </p>
+      <p style="font-weight: 500; color: var(--text); margin-bottom: 8px;">Vantagens para empresas contratantes:</p>
+      <ul>
+        <li><i class="fa-solid fa-circle-nodes"></i> <div><strong>Acesso Direto:</strong> Triagem ágil de talentos qualificados com portfólios visuais modernos.</div></li>
+        <li><i class="fa-solid fa-percent"></i> <div><strong>Descontos Exclusivos:</strong> Condições especiais nas soluções de automação da nossa marca.</div></li>
+        <li><i class="fa-solid fa-comments-dollar"></i> <div><strong>1 Consulta B2B Grátis:</strong> Diagnóstico tecnológico completo para implantação de Agentes de IA nos seus negócios.</div></li>
+        <li><i class="fa-solid fa-gift"></i> <div><strong>Perks Adicionais:</strong> Pacotes customizados de integração de ecossistema.</div></li>
+      </ul>
+      <p style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--accent); letter-spacing: 1px; margin-top: 10px; text-transform: uppercase;">
+        Fazendo a nossa parte.
+      </p>
+      <div style="text-align: center; margin-top: 24px;">
+        <button class="toast-btn" id="modalEmpresaClose">Fechar Painel</button>
+      </div>
     </div>
   </div>
 
@@ -1246,7 +1376,6 @@
 
       navOverlay.addEventListener('click', closeMenu);
 
-      // Fecha menu ao clicar em um link (mobile)
       navLinks.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           if (navLinks.classList.contains('open')) {
@@ -1255,7 +1384,6 @@
         });
       });
 
-      // Fecha ao pressionar Escape
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && navLinks.classList.contains('open')) {
           closeMenu();
@@ -1298,6 +1426,34 @@
       });
 
       /* ==========================================================
+         MODAL EMPRESAS PARCEIRAS — Lógica de abrir/fechar
+         ========================================================== */
+      const btnEmpresaModal = document.getElementById('btnEmpresaModal');
+      const modalEmpresaOverlay = document.getElementById('modalEmpresaOverlay');
+      const modalEmpresaClose = document.getElementById('modalEmpresaClose');
+
+      function openEmpresaModal() {
+        modalEmpresaOverlay.classList.add('show');
+        modalEmpresaOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeEmpresaModal() {
+        modalEmpresaOverlay.classList.remove('show');
+        modalEmpresaOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      btnEmpresaModal.addEventListener('click', openEmpresaModal);
+      modalEmpresaClose.addEventListener('click', closeEmpresaModal);
+      
+      modalEmpresaOverlay.addEventListener('click', function (e) {
+        if (e.target === modalEmpresaOverlay) {
+          closeEmpresaModal();
+        }
+      });
+
+      /* ==========================================================
          SUBMISSÃO DO FORMULÁRIO COM INTEGRAÇÃO NO GOOGLE SHEETS
          ========================================================== */
       const form = document.getElementById('formCurriculo');
@@ -1317,7 +1473,6 @@
             field.style.borderColor = '#ff4444';
             field.style.boxShadow = '0 0 0 3px rgba(255,68,68,0.2)';
 
-            // Remove o destaque de erro ao preencher
             field.addEventListener('input', function clearError() {
               field.style.borderColor = '';
               field.style.boxShadow = '';
@@ -1327,7 +1482,6 @@
         });
 
         if (!valid) {
-          // Rola até o primeiro campo inválido
           const firstInvalid = form.querySelector('[style*="border-color: rgb(255, 68, 68)"]');
           if (firstInvalid) {
             firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1336,11 +1490,9 @@
           return;
         }
 
-        // LÓGICA DE ENVIO (FETCH API PARA O GOOGLE APPS SCRIPT)
         const btnSubmit = form.querySelector('button[type="submit"]');
         const textoOriginal = btnSubmit.innerHTML;
 
-        // Efeito visual no botão enquanto envia
         btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
         btnSubmit.disabled = true;
 
@@ -1352,16 +1504,13 @@
           body: data
         })
         .then(() => {
-          // Exibe toast de sucesso
           toastOverlay.classList.add('show');
           toastOverlay.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
 
-          // Limpa o formulário
           form.reset();
           fileNameSpan.textContent = 'Nenhum arquivo selecionado';
 
-          // Restaura o botão
           btnSubmit.innerHTML = textoOriginal;
           btnSubmit.disabled = false;
         })
@@ -1369,13 +1518,11 @@
           console.error('Erro:', error);
           alert('Houve um erro de ligação ao enviar os seus dados. Por favor, tente novamente em instantes.');
           
-          // Restaura o botão em caso de erro
           btnSubmit.innerHTML = textoOriginal;
           btnSubmit.disabled = false;
         });
       });
 
-      // Fechar toast
       function closeToast() {
         toastOverlay.classList.remove('show');
         toastOverlay.setAttribute('aria-hidden', 'true');
@@ -1390,10 +1537,10 @@
         }
       });
 
-      // Fechar toast com Escape
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && toastOverlay.classList.contains('show')) {
+        if (e.key === 'Escape') {
           closeToast();
+          closeEmpresaModal();
         }
       });
 
@@ -1421,7 +1568,6 @@
         observer.observe(el);
       });
 
-      // Exibe elementos já visíveis ao carregar
       window.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.fade-up').forEach(function (el) {
           const rect = el.getBoundingClientRect();
