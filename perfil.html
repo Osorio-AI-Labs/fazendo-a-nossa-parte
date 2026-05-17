@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currículo Interativo | Osorio AI Labs Social</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  
+  <style>
+    /* MESMO DESIGN SYSTEM DOS OUTROS FICHEIROS */
+    :root {
+      --bg-deep: #0f0f14; --bg-base: #1a1a24; --card-bg: #1e1e2c; --card-light: #252535;
+      --accent: #00bfff; --accent2: #0080c8; --text: #e8e8f0; --text-muted: #8888aa;
+      --border: rgba(0,191,255,0.12); --radius: 18px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Roboto', sans-serif; background: var(--bg-deep); color: var(--text); min-height: 100vh; padding: 40px 20px; }
+    
+    /* Layout do Currículo Universal */
+    .cv-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      display: none; /* Escondido até carregar os dados */
+    }
+
+    .cv-header {
+      background: linear-gradient(135deg, rgba(0,191,255,0.1) 0%, rgba(0,128,200,0.05) 100%);
+      padding: 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--card-light); border: 3px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; color: var(--accent); margin: 0 auto 20px;
+    }
+
+    .cv-header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
+    .cv-header .cargo { color: var(--accent); font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; }
+    
+    .contact-bar { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+    .contact-item { background: var(--card-light); padding: 8px 16px; border-radius: 999px; font-size: 0.85rem; border: 1px solid var(--border); }
+    .contact-item i { color: var(--accent); margin-right: 5px; }
+
+    .cv-body { padding: 40px; }
+    .cv-section { margin-bottom: 35px; }
+    .cv-section h2 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+    
+    .cv-text { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); white-space: pre-line; }
+
+    /* Botão Voltar */
+    .btn-voltar {
+      position: fixed; top: 24px; left: 24px;
+      padding: 10px 20px; background: rgba(15, 15, 20, 0.8); border: 1px solid var(--border);
+      border-radius: 999px; color: #fff; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
+      backdrop-filter: blur(10px); z-index: 100; transition: all 0.3s;
+    }
+    .btn-voltar:hover { background: var(--accent); border-color: var(--accent); transform: translateX(-5px); }
+
+    /* Loading state */
+    #loading { text-align: center; margin-top: 100px; color: var(--accent); font-size: 1.2rem; }
+    #erro { text-align: center; margin-top: 100px; color: #ff4444; display: none; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar à Vitrine</a>
+
+  <div id="loading"><i class="fa-solid fa-spinner fa-spin"></i> A montar o currículo interativo...</div>
+  
+  <div id="erro">
+    <h2><i class="fa-solid fa-circle-exclamation"></i> Ops! Talento não encontrado.</h2>
+    <p>O currículo que procura pode ter sido removido ou o link está incorreto.</p>
+  </div>
+
+  <main class="cv-container" id="cvContainer">
+    <header class="cv-header">
+      <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <h1 id="cvNome">Carregando...</h1>
+      <p class="cargo" id="cvCargo">Carregando...</p>
+      
+      <div class="contact-bar">
+        <div class="contact-item"><i class="fa-solid fa-location-dot"></i> <span id="cvCidade">...</span></div>
+        <div class="contact-item"><i class="fa-solid fa-envelope"></i> <span id="cvEmail">...</span></div>
+        <div class="contact-item" id="cvWhatsappBox"><i class="fa-brands fa-whatsapp"></i> <span id="cvWhatsapp">...</span></div>
+      </div>
+    </header>
+
+    <div class="cv-body">
+      <section class="cv-section">
+        <h2><i class="fa-solid fa-user"></i> Resumo Profissional</h2>
+        <p class="cv-text" id="cvResumo">...</p>
+      </section>
+
+      <section class="cv-section">
+        <h2><i class="fa-solid fa-briefcase"></i> Histórico Profissional</h2>
+        <p class="cv-text" id="cvHistorico">...</p>
+      </section>
+
+      <section class="cv-section">
+        <h2><i class="fa-solid fa-graduation-cap"></i> Formação Académica</h2>
+        <p class="cv-text" id="cvFormacao">...</p>
+      </section>
+
+      <section class="cv-section">
+        <h2><i class="fa-solid fa-lightbulb"></i> Competências e Cursos</h2>
+        <p class="cv-text" id="cvCompetencias">...</p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // A SUA URL DO APPS SCRIPT
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec';
+
+    async function carregarPerfil() {
+      // Lê o nome que veio na URL (ex: perfil.html?talento=Fabiano Osorio)
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomeCandidato = urlParams.get('talento');
+
+      if (!nomeCandidato) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('erro').style.display = 'block';
+        return;
+      }
+
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const aprovados = await response.json();
+
+        // Procura exatamente o candidato clicado
+        const perfil = aprovados.find(c => c.nome === nomeCandidato);
+
+        if (perfil) {
+          // Esconde o loading e mostra o CV
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('cvContainer').style.display = 'block';
+
+          // Preenche os dados HTML com os dados da folha de cálculo
+          document.getElementById('cvNome').textContent = perfil.nome;
+          document.getElementById('cvCargo').textContent = perfil.cargo;
+          document.getElementById('cvCidade').textContent = perfil.cidade;
+          document.getElementById('cvEmail').textContent = perfil.email;
+          document.getElementById('cvWhatsapp').textContent = perfil.whatsapp;
+          document.getElementById('cvResumo').textContent = perfil.resumo;
+          document.getElementById('cvHistorico').textContent = perfil.historico || "Não informado";
+          document.getElementById('cvFormacao').textContent = perfil.formacao || "Não informado";
+          document.getElementById('cvCompetencias').textContent = perfil.competencias || "Não informado";
+          
+        } else {
+          // Se não encontrou o nome nos aprovados
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('erro').style.display = 'block';
+        }
+      } catch (error) {
+        console.error("Erro:", error);
+        document.getElementById('loading').innerHTML = "Erro de ligação. Tente atualizar a página.";
+      }
+    }
+
+    // Arranca quando a página carrega
+    window.addEventListener('DOMContentLoaded', carregarPerfil);
+  </script>
+</body>
+</html>
