@@ -780,66 +780,8 @@
     </div>
 
     <div class="cards-grid" id="cardsGrid">
+        </div>
 
-      <article class="talent-card fade-up" data-category="seguranca" aria-labelledby="card1-name">
-        <span class="card-badge">Destaque</span>
-        <div class="talent-card-avatar">
-          <img src="./Bruno Cavalcante/bruno-github.jpg" alt="Foto de Bruno Cavalcante" loading="lazy">
-        </div>
-        <h3 id="card1-name">Bruno Cavalcante</h3>
-        <p class="cargo">Supervisor de Segurança</p>
-        <p class="bio">
-          Profissional experiente em segurança patrimonial e gestão de equipes operacionais, com foco em resultados e ambientes de alto fluxo.
-        </p>
-        <div class="skill-tags">
-          <span class="skill-tag highlight-tag">Gestão de Equipes</span>
-          <span class="skill-tag highlight-tag">CFTV</span>
-          <span class="skill-tag highlight-tag">Controle de Acesso</span>
-        </div>
-        <a href="./Bruno Cavalcante/index.html" class="card-btn ripple-target">
-          <i class="fa-solid fa-id-card"></i> Ver Currículo Interativo
-        </a>
-      </article>
-
-      <article class="talent-card fade-up" data-category="tecnologia" aria-labelledby="card2-name">
-        <div class="talent-card-avatar">
-          <i class="fa-solid fa-code"></i>
-        </div>
-        <h3 id="card2-name">Amanda Oliveira</h3>
-        <p class="cargo">Desenvolvedora Front-end</p>
-        <p class="bio">
-          Especialista em React, TypeScript e acessibilidade web. Apaixonada por criar interfaces modernas e inclusivas que encantam usuários.
-        </p>
-        <div class="skill-tags">
-          <span class="skill-tag highlight-tag">React</span>
-          <span class="skill-tag highlight-tag">TypeScript</span>
-          <span class="skill-tag highlight-tag">UI/UX</span>
-        </div>
-        <a href="#" class="card-btn ripple-target">
-          <i class="fa-solid fa-id-card"></i> Ver Currículo Interativo
-        </a>
-      </article>
-
-      <article class="talent-card fade-up" data-category="comercial" aria-labelledby="card3-name">
-        <div class="talent-card-avatar">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <h3 id="card3-name">Ricardo Mendes</h3>
-        <p class="cargo">Analista Comercial Sênior</p>
-        <p class="bio">
-          Mais de 8 anos em vendas B2B e negociação estratégica. Histórico comprovado de crescimento de carteira e retenção de clientes.
-        </p>
-        <div class="skill-tags">
-          <span class="skill-tag highlight-tag">Negociação</span>
-          <span class="skill-tag highlight-tag">CRM</span>
-          <span class="skill-tag highlight-tag">B2B</span>
-        </div>
-        <a href="#" class="card-btn ripple-target">
-          <i class="fa-solid fa-id-card"></i> Ver Currículo Interativo
-        </a>
-      </article>
-
-    </div>
   </main>
 
   <footer class="footer fade-up">
@@ -1051,39 +993,6 @@
       });
 
       /* ==========================================================
-         PÍLULAS DE FILTRO — Filtragem dos cards
-         ========================================================== */
-      const filterPills = document.querySelectorAll('.filter-pill');
-      const cards = document.querySelectorAll('.talent-card');
-
-      filterPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          // Atualiza o estado ativo
-          filterPills.forEach(function (p) {
-            p.classList.remove('active');
-            p.setAttribute('aria-pressed', 'false');
-          });
-          pill.classList.add('active');
-          pill.setAttribute('aria-pressed', 'true');
-
-          const filter = pill.getAttribute('data-filter');
-
-          cards.forEach(function (card) {
-            if (filter === 'todos' || card.getAttribute('data-category') === filter) {
-              card.style.display = '';
-              // Re-aciona fade-up se necessário
-              card.classList.remove('visible');
-              requestAnimationFrame(function () {
-                card.classList.add('visible');
-              });
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
-      });
-
-      /* ==========================================================
          INTERSECTION OBSERVER — Revelação dos elementos ao rolar
          ========================================================== */
       const fadeEls = document.querySelectorAll('.fade-up');
@@ -1107,12 +1016,125 @@
         observer.observe(el);
       });
 
-      // Exibe o hero imediatamente (já deve estar visível ao carregar)
-      // Um pequeno delay garante que a transição CSS dispare
+      /* ==========================================================
+         API DA VITRINE — Carrega os candidatos aprovados da planilha
+         ========================================================== */
+      // AQUI JÁ ESTÁ O SEU LINK OFICIAL!
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec'; 
+
+      async function carregarVitrine() {
+        const grid = document.getElementById('cardsGrid');
+        grid.innerHTML = '<p style="text-align:center; width: 100%; grid-column: 1/-1; color: var(--accent);"><i class="fa-solid fa-spinner fa-spin"></i> A carregar os melhores talentos...</p>';
+
+        try {
+          const response = await fetch(SCRIPT_URL);
+          const aprovados = await response.json();
+
+          grid.innerHTML = ''; 
+
+          if (aprovados.length === 0) {
+            grid.innerHTML = '<p style="text-align:center; width: 100%; grid-column: 1/-1; color: var(--text-muted);">Nenhum talento disponível na vitrine neste momento.</p>';
+            return;
+          }
+
+          aprovados.forEach(candidato => {
+            
+            // Criação das pílulas (Tags)
+            let tagsHtml = '';
+            if (candidato.tags) {
+              tagsHtml = candidato.tags.split(',').map(tag => 
+                `<span class="skill-tag highlight-tag">${tag.trim()}</span>`
+              ).join('');
+            }
+
+            // Lógica Inteligente para categorizar o card baseado no Cargo ou Tags
+            let categoria = 'outros';
+            const termosBusca = (candidato.cargo + ' ' + candidato.tags).toLowerCase();
+            
+            if (termosBusca.includes('seguran') || termosBusca.includes('vigilante') || termosBusca.includes('porteiro')) {
+              categoria = 'seguranca';
+            } else if (termosBusca.includes('tec') || termosBusca.includes('dev') || termosBusca.includes('ai') || termosBusca.includes('ia') || termosBusca.includes('dados')) {
+              categoria = 'tecnologia';
+            } else if (termosBusca.includes('admin') || termosBusca.includes('rh') || termosBusca.includes('finan') || termosBusca.includes('gerent')) {
+              categoria = 'administrativo';
+            } else if (termosBusca.includes('comer') || termosBusca.includes('vend') || termosBusca.includes('market')) {
+              categoria = 'comercial';
+            }
+
+            // O HTML de cada candidato
+            const cardHtml = `
+              <article class="talent-card fade-up" data-category="${categoria}">
+                <div class="talent-card-avatar">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h3>${candidato.nome}</h3>
+                <p class="cargo">${candidato.cargo}</p>
+                <p class="bio">${candidato.resumo}</p>
+                <div class="skill-tags">
+                  ${tagsHtml}
+                </div>
+                <a href="#" class="card-btn ripple-target" onclick="alert('O currículo completo estará disponível em breve!'); return false;">
+                  <i class="fa-solid fa-id-card"></i> Ver Currículo
+                </a>
+              </article>
+            `;
+            
+            grid.innerHTML += cardHtml;
+          });
+
+          // Aplica a animação (Observer) nos novos cards acabados de gerar
+          const novosCards = grid.querySelectorAll('.fade-up');
+          novosCards.forEach(el => observer.observe(el));
+
+        } catch (error) {
+          console.error('Erro ao carregar vitrine:', error);
+          grid.innerHTML = '<p style="text-align:center; width: 100%; grid-column: 1/-1; color: #ff4444;">Ocorreu um erro de comunicação. Tente recarregar a página.</p>';
+        }
+      }
+
+      // Exibe os elementos básicos imediatamente
       window.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.hero').classList.add('visible');
         document.querySelector('.vitrine').classList.add('visible');
         document.querySelector('.footer').classList.add('visible');
+        
+        // Arranca o carregamento dos talentos!
+        carregarVitrine();
+      });
+
+      /* ==========================================================
+         PÍLULAS DE FILTRO — Agora funciona com os dados dinâmicos!
+         ========================================================== */
+      const filterPills = document.querySelectorAll('.filter-pill');
+
+      filterPills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          // Atualiza visual do botão
+          filterPills.forEach(function (p) {
+            p.classList.remove('active');
+            p.setAttribute('aria-pressed', 'false');
+          });
+          pill.classList.add('active');
+          pill.setAttribute('aria-pressed', 'true');
+
+          const filter = pill.getAttribute('data-filter');
+          
+          // Vai buscar os cards que acabaram de ser gerados pelo JavaScript
+          const dynamicCards = document.querySelectorAll('.talent-card');
+
+          dynamicCards.forEach(function (card) {
+            if (filter === 'todos' || card.getAttribute('data-category') === filter) {
+              card.style.display = '';
+              // Repete a animação se necessário
+              card.classList.remove('visible');
+              requestAnimationFrame(function () {
+                card.classList.add('visible');
+              });
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
       });
 
       /* ==========================================================
