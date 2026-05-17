@@ -10,317 +10,187 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     :root {
-      --bg-deep:      #0f0f14;
-      --bg-base:      #1a1a24;
-      --card-bg:      #1e1e2c;
-      --card-light:   #252535;
-      --shadow-dark:  rgba(0,0,0,0.6);
-      --shadow-light: rgba(255,255,255,0.06);
-      --accent:       #00bfff;
-      --accent2:      #0080c8;
-      --accent-glow:  rgba(0,191,255,0.25);
-      --gold:         #ffd700;
-      --text:         #e8e8f0;
-      --text-muted:   #8888aa;
-      --border:       rgba(0,191,255,0.12);
-      --radius:       18px;
-      --radius-sm:    10px;
-      --radius-pill:  50px;
+      --bg-deep:      #0f0f14; --bg-base:      #1a1a24; --card-bg:      #1e1e2c; --card-light:   #252535;
+      --accent:       #00bfff; --accent2:      #0080c8; --accent-glow:  rgba(0,191,255,0.25);
+      --text:         #e8e8f0; --text-muted:   #8888aa; --border:       rgba(0,191,255,0.12);
+      --radius:       18px; --radius-sm:    10px; --radius-pill:  50px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: var(--bg-deep);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+    body { font-family: 'Roboto', sans-serif; background: var(--bg-deep); color: var(--text); min-height: 100vh; overflow-x: hidden; position: relative; }
+    
     body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,100,180,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 85%, rgba(0,191,255,0.10) 0%, transparent 55%),
-        linear-gradient(135deg, #0a0a12 0%, #101020 50%, #0d1020 100%);
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,100,180,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 85%, rgba(0,191,255,0.10) 0%, transparent 55%), linear-gradient(135deg, #0a0a12 0%, #101020 50%, #0d1020 100%);
     }
-    body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(0,191,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,191,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: gridPulse 8s ease-in-out infinite;
-    }
-    @keyframes gridPulse { 0%,100%{opacity:.5}50%{opacity:1} }
     #particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-    .particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;opacity:0;animation:floatUp linear infinite}
-    @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.4}100%{transform:translateY(-20px) scale(1.5);opacity:0}}
     
     /* Telas de Carregamento e Erro */
-    #loading-screen, #error-screen {
-      position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--bg-deep); color: var(--text);
-    }
+    #loading-screen, #error-screen { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--bg-deep); color: var(--text); padding: 20px; }
     #loading-screen i { font-size: 3.5rem; color: var(--accent); margin-bottom: 24px; animation: fa-spin 2s linear infinite; }
     #error-screen i { font-size: 4rem; color: #ff3366; margin-bottom: 20px; }
     .btn-voltar-erro { margin-top: 24px; display: inline-block; padding: 12px 28px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 50px; font-weight: bold; font-family: 'Montserrat', sans-serif; transition: all 0.3s; }
     .btn-voltar-erro:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-glow); }
+    
+    /* Caixa de Diagnóstico do Erro */
+    #debug-info { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.6); border: 1px dashed #ffeb3b; border-radius: 10px; color: #ffeb3b; font-family: monospace; font-size: 0.85rem; max-width: 600px; text-align: left; word-wrap: break-word; }
 
     /* Layout do Currículo */
     .site-wrapper{position:relative;z-index:1; display: none;}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(15,15,20,.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(15,15,20,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.4)}
     .nav-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.1rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase; text-decoration: none; transition: color 0.3s;}
-    .nav-logo:hover { color: #fff; text-shadow: 0 0 10px var(--accent-glow); }
     .nav-links{display:flex;gap:.25rem}
-    .nav-links a{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:all .3s ease;position:relative;overflow:hidden}
-    .nav-links a::before{content:'';position:absolute;inset:0;background:var(--accent-glow);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;border-radius:inherit}
-    .nav-links a:hover{color:var(--accent)}
-    .nav-links a:hover::before{transform:scaleX(1)}
+    .nav-links a{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;color:var(--text-muted);text-decoration:none;}
     
     #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 2rem 4rem;text-align:center;position:relative}
     .hero-photo-frame{margin-bottom:1.1rem;position:relative}
-    .hero-photo-ring{position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(0,191,255,.22);box-shadow:0 0 35px rgba(0,191,255,.12);animation:ringPulse 3.2s ease-in-out infinite}
-    @keyframes ringPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.04);opacity:1}}
-    
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 20px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;animation:fadeDown .8s ease both}
-    .hero-avatar{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--card-bg),var(--card-light));border:3px solid var(--accent);box-shadow:0 0 0 6px rgba(0,191,255,.12),0 0 40px rgba(0,191,255,.3),-6px -6px 18px var(--shadow-light),6px 6px 18px var(--shadow-dark);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin:0 auto 1.8rem;transition:transform .3s ease,box-shadow .3s ease;cursor:default;overflow:hidden;position:relative}
+    .hero-avatar{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--card-bg),var(--card-light));border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin:0 auto 1.8rem;overflow:hidden;position:relative; color: var(--accent);}
     .hero-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .hero-avatar:hover{transform:scale(1.07) rotate(3deg);box-shadow:0 0 0 8px rgba(0,191,255,.2),0 0 60px rgba(0,191,255,.45),-6px -6px 18px var(--shadow-light),6px 6px 18px var(--shadow-dark)}
     
-    .hero-name{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.8rem);line-height:1.1;letter-spacing:-1px;color:var(--text);text-shadow:0 0 40px rgba(0,191,255,.3)}
+    .hero-name{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.8rem);line-height:1.1;color:var(--text);}
     .hero-name .accent{color:var(--accent)}
-    .hero-subtitle{font-size:clamp(.85rem,2vw,1rem);color:var(--text-muted);margin-top:.6rem;letter-spacing:3px;text-transform:uppercase;}
-    
+    .hero-subtitle{font-size:clamp(.85rem,2vw,1rem);color:var(--text-muted);margin-top:.6rem;text-transform:uppercase;}
     .hero-role-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:1.8rem;}
-    .role-tag{padding:7px 18px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;letter-spacing:1px;background:var(--card-bg);color:var(--accent);border:1px solid var(--border);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
-    .role-tag:hover{background:var(--accent);color:#000;box-shadow:0 0 20px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transform:translateY(-2px)}
+    .role-tag{padding:7px 18px;border-radius:var(--radius-pill);font-size:.78rem;font-weight:600;background:var(--card-bg);color:var(--accent);border:1px solid var(--border);}
     
     .hero-contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:2rem;}
-    .contact-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:var(--radius-pill);font-size:.8rem;font-weight:500;text-decoration:none;color:var(--text);background:var(--card-bg);border:1px solid var(--border);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease}
-    .contact-chip i{color:var(--accent);font-size:.85rem}
-    .contact-chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
-    
-    .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;margin-top:2.5rem;}
-    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:var(--radius-pill);font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
-    .btn-primary{color:#000;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 24px var(--accent-glow),0 2px 8px rgba(0,0,0,.4)}
-    .btn-secondary{color:var(--text);background:var(--card-bg);border:1px solid var(--border);box-shadow:-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark)}
-    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 40px var(--accent-glow)}
-    .btn-secondary:hover{transform:translateY(-3px);color:var(--accent);border-color:rgba(0,191,255,.35);box-shadow:0 8px 28px rgba(0,191,255,.18),-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark)}
-    
-    .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
-    .scroll-indicator i{font-size:1.2rem;color:var(--accent)}
-    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    .contact-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:var(--radius-pill);font-size:.8rem;color:var(--text);background:var(--card-bg);border:1px solid var(--border);text-decoration:none;}
+    .contact-chip i{color:var(--accent);}
     
     section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
     .section-header{text-align:center;margin-bottom:3rem}
-    .section-label{display:inline-flex;align-items:center;gap:8px;padding:5px 18px;border-radius:var(--radius-pill);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:rgba(0,191,255,.07);margin-bottom:.8rem}
+    .section-label{display:inline-flex;align-items:center;gap:8px;padding:5px 18px;border-radius:var(--radius-pill);font-size:.7rem;font-weight:700;color:var(--accent);border:1px solid var(--border);background:rgba(0,191,255,.07);margin-bottom:.8rem}
     .section-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--text)}
     .section-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--accent),transparent);margin:.8rem auto 0;border-radius:2px}
     
-    .card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:2rem;box-shadow:-6px -6px 16px var(--shadow-light),6px 6px 16px var(--shadow-dark);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
-    .card:hover{transform:translateY(-4px);border-color:rgba(0,191,255,.3);box-shadow:-6px -6px 16px var(--shadow-light),6px 6px 24px var(--shadow-dark),0 0 30px rgba(0,191,255,.08)}
+    .card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:2rem;}
     #cv-resumo-card p{font-size:1rem;line-height:1.85;color:var(--text-muted); white-space: pre-line;}
     
     .timeline{position:relative;padding-left:2rem}
     .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),transparent)}
     .timeline-item{position:relative;margin-bottom:2.2rem;}
-    .timeline-dot{position:absolute;left:-2.45rem;top:12px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent-glow);border:2px solid var(--bg-deep)}
-    .exp-card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;box-shadow:-4px -4px 12px var(--shadow-light),4px 4px 12px var(--shadow-dark);cursor:pointer;transition:all .3s ease}
-    .exp-card:hover{border-color:rgba(0,191,255,.3);transform:translateX(6px);box-shadow:-4px -4px 12px var(--shadow-light),8px 8px 20px var(--shadow-dark),0 0 20px rgba(0,191,255,.08)}
+    .timeline-dot{position:absolute;left:-2.45rem;top:12px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--bg-deep)}
+    .exp-card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;cursor:pointer;}
     .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem}
     .exp-company{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;color:var(--text)}
-    .exp-period{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.72rem;font-weight:600;color:var(--accent)}
+    .exp-period{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:var(--radius-pill);background:rgba(0,191,255,.1);border:1px solid var(--border);font-size:.72rem;color:var(--accent)}
     .exp-role{font-size:.85rem;color:var(--text-muted);margin-top:4px}
-    .exp-body{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s;opacity:0}
+    .exp-body{overflow:hidden;max-height:0;transition:max-height .45s ease,opacity .35s;opacity:0}
     .exp-body.open{max-height:800px;opacity:1}
     .exp-body p{margin-top:1rem;font-size:.85rem;color:var(--text-muted);line-height:1.6; white-space: pre-line;}
-    .exp-toggle{margin-top:.8rem;display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--accent);font-weight:600;cursor:pointer;transition:opacity .2s}
-    .exp-toggle i{transition:transform .35s ease}
-    .exp-toggle.open i{transform:rotate(180deg)}
+    .exp-toggle{margin-top:.8rem;display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--accent);cursor:pointer;}
     
     .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
     .edu-card{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
-    .edu-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,191,255,.1);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;box-shadow:-4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark);transition:transform .3s ease,box-shadow .3s ease}
-    .edu-icon:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 0 24px var(--accent-glow)}
-    .edu-info h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text)}
-    .edu-info p{font-size:.85rem;color:var(--text-muted);margin-top:4px}
+    .edu-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,191,255,.1);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
     
     .courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
-    .course-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--card-bg);border:1px solid var(--border);font-size:.82rem;color:var(--text);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
-    .course-item .ci{width:32px;height:32px;border-radius:50%;background:rgba(0,191,255,.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .course-item .ci i{color:var(--accent);font-size:.8rem}
-    .course-item:hover{border-color:rgba(0,191,255,.35);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,191,255,.12),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
+    .course-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--card-bg);border:1px solid var(--border);font-size:.82rem;}
     
     .skills-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem}
-    .skill-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-pill);background:var(--card-bg);border:1px solid var(--border);font-size:.8rem;font-weight:500;color:var(--text);box-shadow:-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark);transition:all .25s ease;cursor:default}
-    .skill-chip i{color:var(--accent);font-size:.8rem}
-    .skill-chip:hover{background:var(--card-light);border-color:rgba(0,191,255,.35);color:var(--accent);transform:scale(1.05) translateY(-2px);box-shadow:0 8px 20px var(--accent-glow),-3px -3px 8px var(--shadow-light),3px 3px 8px var(--shadow-dark)}
+    .skill-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-pill);background:var(--card-bg);border:1px solid var(--border);font-size:.8rem;}
     
-    footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;position:relative;z-index:1;color:var(--text-muted);font-size:.78rem}
-    footer a{color:var(--accent);text-decoration:none}
-    
-    .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
-    .reveal.visible{opacity:1;transform:translateY(0)}
-    @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-    
-    /* Hamburger Menu para Mobile */
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-    .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
-    
-    @media(max-width:640px){
-      .nav-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(15,15,20,.95);backdrop-filter:blur(20px);padding:1rem;gap:.5rem;border-bottom:1px solid var(--border)}
-      .nav-links.open{display:flex}
-      .hamburger{display:flex}
-      .timeline{padding-left:1.2rem}
-      .timeline-dot{left:-1.65rem}
-      .edu-card{flex-direction:column;text-align:center}
-    }
+    footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;color:var(--text-muted);font-size:.78rem}
   </style>
 </head>
 <body>
-  <div id="particles"></div>
-
   <div id="loading-screen">
     <i class="fa-solid fa-circle-notch"></i>
     <h2 style="font-family:'Montserrat', sans-serif;">A gerar currículo interativo...</h2>
-    <p style="color: var(--text-muted); margin-top: 10px;">A aceder aos dados seguros da Osorio AI Labs.</p>
   </div>
 
   <div id="error-screen" style="display: none;">
     <i class="fa-solid fa-triangle-exclamation"></i>
     <h2 style="font-family:'Montserrat', sans-serif;">Talento não encontrado</h2>
-    <p style="color: var(--text-muted); margin-top: 10px; max-width: 400px; line-height: 1.6;">Não foi possível carregar os dados deste profissional. Confirme se o link está correto ou volte à vitrine.</p>
+    <p style="color: var(--text-muted); margin-top: 10px; max-width: 400px; line-height: 1.6;">O sistema não encontrou correspondência para este perfil.</p>
+    
+    <div id="debug-info"></div>
+
     <a href="index.html" class="btn-voltar-erro"><i class="fa-solid fa-arrow-left"></i> Voltar à Vitrine</a>
   </div>
 
   <div class="site-wrapper" id="site-wrapper">
     <nav>
       <a href="index.html" class="nav-logo"><i class="fa-solid fa-arrow-left"></i> Voltar à Vitrine</a>
-      <div class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></div>
       <div class="nav-links" id="nav-links">
         <a href="#hero"><i class="fa fa-home"></i>Início</a>
         <a href="#resumo"><i class="fa fa-user"></i>Resumo</a>
         <a href="#experiencia"><i class="fa fa-briefcase"></i>Experiência</a>
-        <a href="#formacao"><i class="fa fa-graduation-cap"></i>Formação</a>
       </div>
     </nav>
 
     <section id="hero">
-      <div class="hero-badge"><i class="fa fa-shield-alt"></i> <span id="cv-cargo-badge">Profissional Verificado</span></div>
       <div class="hero-photo-frame">
-        <div class="hero-photo-ring"></div>
         <div class="hero-avatar" id="cv-avatar-container">
           <img id="cv-img" src="" alt="Foto" style="display:none;" onerror="this.style.display='none'; document.getElementById('cv-icon').style.display='block';">
-          <i id="cv-icon" class="fa-solid fa-user-tie" style="color: var(--accent);"></i>
+          <i id="cv-icon" class="fa-solid fa-user-tie"></i>
         </div>
       </div>
       <h1 class="hero-name" id="cv-nome">Nome <span class="accent">Sobrenome</span></h1>
-      <p class="hero-subtitle" id="cv-localidade">Cidade – Estado | Osorio AI Labs</p>
+      <p class="hero-subtitle" id="cv-localidade">Cidade</p>
       
-      <div class="hero-role-tags" id="cv-tags">
-        </div>
+      <div class="hero-role-tags" id="cv-tags"></div>
       
       <div class="hero-contacts">
-        <a id="link-whatsapp" href="#" target="_blank" class="contact-chip"><i class="fab fa-whatsapp"></i><span id="txt-whatsapp">(00) 00000-0000</span></a>
-        <a id="link-email" href="#" class="contact-chip"><i class="fa fa-envelope"></i><span id="txt-email">email@email.com</span></a>
-        <a id="link-linkedin" href="#" target="_blank" class="contact-chip" style="display:none;"><i class="fab fa-linkedin"></i>LinkedIn</a>
+        <a id="link-whatsapp" href="#" target="_blank" class="contact-chip"><i class="fab fa-whatsapp"></i><span id="txt-whatsapp">WhatsApp</span></a>
+        <a id="link-email" href="#" class="contact-chip"><i class="fa fa-envelope"></i><span id="txt-email">E-mail</span></a>
       </div>
-      
-      <div class="hero-actions">
-        <a href="#resumo" class="btn-primary"><i class="fa fa-eye"></i>Ver Currículo</a>
-        <button type="button" class="btn-secondary" onclick="window.print()"><i class="fa fa-file-pdf"></i>Baixar PDF</button>
-      </div>
-      <div class="scroll-indicator"><span>Role</span><i class="fa fa-chevron-down"></i></div>
     </section>
 
     <section id="resumo">
-      <div class="section-header reveal">
-        <div class="section-label"><i class="fa fa-user-tie"></i> Perfil</div>
+      <div class="section-header">
         <h2 class="section-title">Resumo Profissional</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="card reveal" id="cv-resumo-card">
-        <p id="txt-resumo">Carregando resumo...</p>
+      <div class="card" id="cv-resumo-card">
+        <p id="txt-resumo">Resumo...</p>
       </div>
     </section>
 
     <section id="experiencia">
-      <div class="section-header reveal">
-        <div class="section-label"><i class="fa fa-briefcase"></i> Histórico</div>
+      <div class="section-header">
         <h2 class="section-title">Experiência Profissional</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="timeline" id="cv-timeline">
-        </div>
+      <div class="timeline" id="cv-timeline"></div>
     </section>
 
     <section id="formacao">
-      <div class="section-header reveal">
-        <div class="section-label"><i class="fa fa-graduation-cap"></i> Educação</div>
+      <div class="section-header">
         <h2 class="section-title">Formação Acadêmica</h2>
         <div class="section-divider"></div>
       </div>
       <div class="grid2">
-        <div class="card reveal edu-card">
+        <div class="card edu-card">
           <div class="edu-icon">🎓</div>
           <div class="edu-info">
             <h3 id="txt-escola">Ensino</h3>
-            <p style="color:var(--accent);font-weight:600;margin-top:6px;" id="txt-curso">Curso Principal</p>
-            <p>Formação e capacitação focada no desenvolvimento profissional.</p>
+            <p style="color:var(--accent);font-weight:600;" id="txt-curso">Curso</p>
           </div>
         </div>
       </div>
 
-      <div class="section-header reveal" style="margin-top: 5rem;">
-        <div class="section-label"><i class="fa fa-certificate"></i> Qualificações</div>
+      <div class="section-header" style="margin-top: 4rem;">
         <h2 class="section-title">Cursos & Certificações</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="courses-grid reveal" id="cv-cursos">
-        </div>
+      <div class="courses-grid" id="cv-cursos"></div>
     </section>
 
     <section id="competencias" style="margin-bottom: 4rem;">
-      <div class="section-header reveal">
-        <div class="section-label"><i class="fa fa-tasks"></i> Habilidades</div>
+      <div class="section-header">
         <h2 class="section-title">Competências</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="skills-grid reveal" id="cv-competencias">
-        </div>
+      <div class="skills-grid" id="cv-competencias"></div>
     </section>
 
     <footer>
-      <p>© 2026 <span id="footer-nome">Profissional</span> &nbsp;|&nbsp; Gerado pela Osorio AI Labs Social</p>
+      <p>© 2026 <span id="footer-nome">Profissional</span></p>
     </footer>
   </div>
 
   <script>
-    // =========================================================================
-    // ANIMAÇÃO DE FUNDO (PARTÍCULAS)
-    // =========================================================================
-    (function(){
-      var c=document.getElementById('particles');
-      for(var i=0;i<35;i++){
-        var p=document.createElement('div'); p.className='particle';
-        p.style.cssText='left:'+Math.random()*100+'%;width:'+(1+Math.random()*2)+'px;height:'+(1+Math.random()*2)+'px;animation-duration:'+(6+Math.random()*12)+'s;animation-delay:'+(Math.random()*10)+'s;';
-        c.appendChild(p);
-      }
-    })();
-
-    // Menu Mobile
-    document.getElementById('ham').addEventListener('click',function(){
-      document.getElementById('nav-links').classList.toggle('open');
-    });
-    document.querySelectorAll('.nav-links a').forEach(function(a){
-      a.addEventListener('click',function(){document.getElementById('nav-links').classList.remove('open');});
-    });
-
-    // =========================================================================
-    // O CÉREBRO: LER A PLANILHA E DESENHAR O CURRÍCULO
-    // =========================================================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec';
 
     async function carregarPerfil() {
@@ -328,37 +198,33 @@
       let nomeCandidato = urlParams.get('talento');
 
       if (!nomeCandidato) {
+        document.getElementById('debug-info').innerHTML = "ERRO: O link não enviou nenhum nome. O parâmetro ?talento= está vazio.";
         mostrarErro();
         return;
       }
 
-      // Sistema à prova de falhas: limpa os espaços e ignora maiúsculas
       nomeCandidato = nomeCandidato.trim().toLowerCase();
 
       try {
         const response = await fetch(SCRIPT_URL);
         const aprovados = await response.json();
         
-        // Encontra o candidato ignorando maiúsculas e minúsculas
         const perfil = aprovados.find(c => c.nome && c.nome.trim().toLowerCase() === nomeCandidato);
 
         if (perfil) {
           preencherDados(perfil);
-          
           document.getElementById('loading-screen').style.display = 'none';
           document.getElementById('site-wrapper').style.display = 'block';
-
-          // Dispara as animações dos cartões
-          const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
-          },{threshold:0.1});
-          document.querySelectorAll('.reveal, .timeline-item').forEach(el => obs.observe(el));
-
         } else {
+          // MOSTRA EXATAMENTE O QUE A API DEVOLVEU
+          let nomesNaAPI = aprovados.map(c => c.nome).join(', ');
+          document.getElementById('debug-info').innerHTML = 
+            `<strong>Buscando por:</strong> "${nomeCandidato}"<br><br>` +
+            `<strong>Nomes encontrados na sua Planilha (API):</strong><br> ${nomesNaAPI || "Nenhum nome aprovado encontrado. Verifique se o Apps Script foi atualizado."}`;
           mostrarErro();
         }
       } catch (error) {
-        console.error("Erro ao buscar dados:", error);
+        document.getElementById('debug-info').innerHTML = `<strong>ERRO DE LIGAÇÃO:</strong> ${error.message}<br>Verifique se o seu Apps Script está implementado para "Qualquer Pessoa".`;
         mostrarErro();
       }
     }
@@ -369,76 +235,48 @@
     }
 
     function preencherDados(p) {
-      // 1. Cabeçalho (Nome Inteligente)
       const nomes = p.nome.split(' ');
-      const primeiroNome = nomes[0];
-      const restoNome = nomes.slice(1).join(' ');
-      document.getElementById('cv-nome').innerHTML = `${primeiroNome} <br><span class="accent">${restoNome}</span>`;
+      document.getElementById('cv-nome').innerHTML = `${nomes[0]} <br><span class="accent">${nomes.slice(1).join(' ')}</span>`;
       document.getElementById('footer-nome').textContent = p.nome;
       document.getElementById('page-title').textContent = `${p.nome} - Currículo`;
-
-      document.getElementById('cv-cargo-badge').textContent = p.cargo || "Profissional";
-      document.getElementById('cv-localidade').textContent = p.cidade || "Localização não informada";
+      document.getElementById('cv-localidade').textContent = p.cidade || "Local não informado";
       
-      // 2. Foto Dinâmica
-      if (p.foto && p.foto.trim() !== "" && p.foto.startsWith("http")) {
+      if (p.foto && p.foto.startsWith("http")) {
           document.getElementById('cv-img').src = p.foto;
           document.getElementById('cv-img').style.display = 'block';
           document.getElementById('cv-icon').style.display = 'none';
       }
 
-      // 3. Contactos
       document.getElementById('txt-whatsapp').textContent = p.whatsapp;
       document.getElementById('link-whatsapp').href = `https://wa.me/55${p.whatsapp.replace(/\D/g,'')}`;
       document.getElementById('txt-email').textContent = p.email;
       document.getElementById('link-email').href = `mailto:${p.email}`;
-      if (p.linkedin && p.linkedin.trim() !== "") {
-          const lk = document.getElementById('link-linkedin');
-          lk.style.display = 'inline-flex'; lk.href = p.linkedin;
-      }
-
-      // 4. Tags
+      
       if (p.tags) {
-          const tagsContainer = document.getElementById('cv-tags');
           p.tags.split(',').forEach(tag => {
-              tagsContainer.innerHTML += `<span class="role-tag">${tag.trim()}</span>`;
+              document.getElementById('cv-tags').innerHTML += `<span class="role-tag">${tag.trim()}</span>`;
           });
       }
-
-      // 5. Resumo
       document.getElementById('txt-resumo').textContent = p.resumo || "Não informado.";
-
-      // 6. Educação
       document.getElementById('txt-curso').textContent = p.formacao || "Formação Completa";
       document.getElementById('txt-escola').textContent = "Educação"; 
 
-      // 7. Cursos
-      if (p.formacao && p.formacao !== "") {
-          const cGrid = document.getElementById('cv-cursos');
+      if (p.formacao) {
           p.formacao.split(',').forEach(curso => {
-              cGrid.innerHTML += `<div class="course-item"><div class="ci"><i class="fa fa-check"></i></div><span>${curso.trim()}</span></div>`;
+              document.getElementById('cv-cursos').innerHTML += `<div class="course-item"><div class="ci"><i class="fa fa-check"></i></div><span>${curso.trim()}</span></div>`;
           });
-      } else {
-          document.getElementById('cv-cursos').innerHTML = "<p style='color:var(--text-muted); margin-left: 20px;'>Nenhum curso informado.</p>";
       }
-
-      // 8. Competências
       if (p.competencias) {
-          const sGrid = document.getElementById('cv-competencias');
           p.competencias.split(',').forEach(comp => {
-              sGrid.innerHTML += `<span class="skill-chip"><i class="fa fa-star"></i>${comp.trim()}</span>`;
+              document.getElementById('cv-competencias').innerHTML += `<span class="skill-chip"><i class="fa fa-star"></i>${comp.trim()}</span>`;
           });
       }
 
-      // 9. Histórico Profissional (Timeline Inteligente)
       const tContainer = document.getElementById('cv-timeline');
-      // Trazemos sempre a string para evitar erros
       const historicoData = p.historico || "";
       
       if (historicoData.trim() !== "") {
-          // Separa as experiências
           const pedaços = historicoData.split(/\[Experiência \d+\]/).filter(texto => texto.trim() !== '');
-          
           if (pedaços.length > 0) {
               let timelineHTML = '';
               pedaços.forEach(expText => {
@@ -447,25 +285,20 @@
                   const perMatch = expText.match(/Período:\s*(.*?)\s*\|/);
                   const atvMatch = expText.match(/Atividades:\s*(.*)/is);
 
-                  const empresa = empMatch ? empMatch[1] : "Empresa";
-                  const cargo = carMatch ? carMatch[1] : "Cargo";
-                  const periodo = perMatch ? perMatch[1] : "Período";
-                  const ativ = atvMatch ? atvMatch[1].trim() : expText.trim();
-
                   timelineHTML += `
-                    <div class="timeline-item reveal">
+                    <div class="timeline-item">
                       <div class="timeline-dot"></div>
                       <div class="exp-card" onclick="toggleExp(this)">
                         <div class="exp-header">
                           <div>
-                            <div class="exp-company">${empresa}</div>
-                            <div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> ${cargo}</div>
+                            <div class="exp-company">${empMatch ? empMatch[1] : "Empresa"}</div>
+                            <div class="exp-role"><i class="fa fa-user-shield" style="color:var(--accent)"></i> ${carMatch ? carMatch[1] : "Cargo"}</div>
                           </div>
-                          <span class="exp-period"><i class="fa fa-calendar"></i> ${periodo}</span>
+                          <span class="exp-period"><i class="fa fa-calendar"></i> ${perMatch ? perMatch[1] : "Período"}</span>
                         </div>
                         <div class="exp-toggle"><span>Ver atividades</span><i class="fa fa-chevron-down"></i></div>
                         <div class="exp-body">
-                          <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; white-space: pre-line;">${ativ}</p>
+                          <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; white-space: pre-line;">${atvMatch ? atvMatch[1].trim() : expText.trim()}</p>
                         </div>
                       </div>
                     </div>
@@ -480,25 +313,13 @@
       }
     }
 
-    // =========================================================================
-    // ACORDEÃO DAS EXPERIÊNCIAS
-    // =========================================================================
     function toggleExp(card){
       var body = card.querySelector('.exp-body');
-      var toggle = card.querySelector('.exp-toggle');
       var isOpen = body.classList.contains('open');
-      
       document.querySelectorAll('.exp-body.open').forEach(function(b){
         b.classList.remove('open');
-        b.closest('.exp-card').querySelector('.exp-toggle').classList.remove('open');
-        b.closest('.exp-card').querySelector('.exp-toggle span').textContent='Ver atividades';
       });
-      
-      if(!isOpen){
-          body.classList.add('open');
-          toggle.classList.add('open');
-          toggle.querySelector('span').textContent='Fechar';
-      }
+      if(!isOpen) body.classList.add('open');
     }
 
     window.addEventListener('DOMContentLoaded', carregarPerfil);
