@@ -1005,7 +1005,7 @@
                 <label for="anoSaida2">Ano Saída</label>
                 <input type="text" id="anoSaida2" name="anoSaida2" placeholder="Ex: 2020">
               </div>
-              <div class="form-group full">
+              <div class="form-grid full">
                 <label for="atividades2">Principais Atividades</label>
                 <textarea id="atividades2" name="atividades2" placeholder="Descreva suas principais responsabilidades e conquistas..." rows="3"></textarea>
               </div>
@@ -1348,10 +1348,10 @@
 
         fetch('https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec', {
           method: 'POST',
+          mode: 'no-cors',
           body: data
         })
-        .then(response => response.text())
-        .then(result => {
+        .then(() => {
           // Exibe toast de sucesso
           toastOverlay.classList.add('show');
           toastOverlay.setAttribute('aria-hidden', 'false');
@@ -1367,7 +1367,7 @@
         })
         .catch(error => {
           console.error('Erro:', error);
-          alert('Houve um erro de conexão ao enviar seus dados. Por favor, tente novamente em instantes.');
+          alert('Houve um erro de ligação ao enviar os seus dados. Por favor, tente novamente em instantes.');
           
           // Restaura o botão em caso de erro
           btnSubmit.innerHTML = textoOriginal;
