@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cadastre seu currículo na iniciativa Fazendo a Nossa Parte da Osorio Ai Labs e transforme sua carreira.">
+  <meta name="theme-color" content="#0f0f14">
+  <title>Cadastrar Currículo | Fazendo a Nossa Parte</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <style>
+    /* ============================================================
+       DESIGN SYSTEM
+       ============================================================ */
+    :root {
+      --bg-deep: #0f0f14;
+      --bg-base: #1a1a24;
+      --card-bg: #1e1e2c;
+      --card-light: #252535;
+      --accent: #00bfff;
+      --accent2: #0080c8;
+      --accent-glow: rgba(0,191,255,0.25);
+      --text: #e8e8f0;
+      --text-muted: #8888aa;
+      --border: rgba(0,191,255,0.12);
+      --radius: 18px;
+      --radius-sm: 10px;
+      --nav-height: 72px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       ANIMATED BACKGROUND
+       ============================================================ */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse at 30% 20%, var(--accent-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(0,128,200,0.12) 0%, transparent 50%);
+      z-index: 0;
+      pointer-events: none;
+      animation: glowPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0%   { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* ============================================================
+       NAVBAR — Glassmorphism (idêntica à index.html)
+       ============================================================ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      background: rgba(15,15,20,0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 80px);
+      z-index: 1000;
+    }
+
+    .navbar-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .navbar-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 0.95rem;
+      transition: color 0.25s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      z-index: 1100;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    /* ============================================================
+       PAGE WRAPPER
+       ============================================================ */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      padding-top: var(--nav-height);
+    }
+
+    /* ============================================================
+       COMO FUNCIONA — Seção explicativa
+       ============================================================ */
+    .como-funciona {
+      padding: 60px clamp(20px, 5vw, 80px) 40px;
+      text-align: center;
+    }
+
+    .como-funciona h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      margin-bottom: 16px;
+    }
+
+    .como-funciona .subtitulo {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    .passos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .passo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px 28px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      position: relative;
+    }
+
+    .passo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 24px var(--accent-glow);
+      border-color: rgba(0,191,255,0.25);
+    }
+
+    .passo-numero {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .passo-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .passo-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .passo-card .passo-icon {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    /* ============================================================
+       FORMULÁRIO DE CADASTRO
+       ============================================================ */
+    .cadastro {
+      padding: 40px clamp(20px, 5vw, 80px) 80px;
+    }
+
+    .cadastro-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .cadastro-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      margin-bottom: 10px;
+    }
+
+    .cadastro-header p {
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Fieldset estilizado como card */
+    .form-etapa {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-etapa:hover {
+      border-color: rgba(0,191,255,0.2);
+      box-shadow: 0 0 20px rgba(0,191,255,0.06);
+    }
+
+    .form-etapa legend {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--accent);
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-etapa legend i {
+      font-size: 1rem;
+    }
+
+    .form-etapa .etapa-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      margin-top: 4px;
+    }
+
+    /* Grid de campos */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .form-grid.col-1 {
+      grid-template-columns: 1fr;
+    }
+
+    .form-grid.col-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Grupo de campo */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group label i {
+      color: var(--accent);
+      font-size: 0.75rem;
+      width: 16px;
+      text-align: center;
+    }
+
+    .form-group label .opcional {
+      font-weight: 300;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+
+    /* Inputs e Textareas */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="file"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: var(--card-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background: var(--card-bg);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Input de arquivo estilizado */
+    .file-upload-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .file-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1.5px dashed var(--accent);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+      background: rgba(0,191,255,0.08);
+    }
+
+    .file-name {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Select estilizado */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238888aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    select option {
+      background: var(--card-bg);
+      color: var(--text);
+    }
+
+    /* Botão de envio */
+    .submit-wrapper {
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 48px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 28px rgba(0,191,255,0.25);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 44px rgba(0,191,255,0.45), 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .btn-submit:active {
+      transform: translateY(-1px);
+    }
+
+    /* Ripple */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: scale(0);
+      animation: rippleAnim 0.65s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* ============================================================
+       MENSAGEM DE SUCESSO (Toast)
+       ============================================================ */
+    .toast-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .toast-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .toast-card {
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: center;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 0 48px var(--accent-glow), 0 16px 48px rgba(0,0,0,0.5);
+      animation: toastIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .toast-icon {
+      font-size: 3.5rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .toast-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .toast-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .toast-btn {
+      padding: 12px 28px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.3s ease;
+    }
+
+    .toast-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(0,191,255,0.4);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      position: relative;
+      z-index: 1;
+      padding: 60px clamp(20px, 5vw, 80px) 36px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-message {
+      max-width: 560px;
+      margin: 0 auto 28px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .footer-message .footer-icon {
+      font-size: 1.6rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .footer-link {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 300;
+      margin-bottom: 20px;
+      transition: color 0.25s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--accent);
+    }
+
+    .footer-link i {
+      margin-right: 4px;
+      font-size: 0.7rem;
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* ============================================================
+       FADE-UP (Intersection Observer)
+       ============================================================ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: rgba(15,15,20,0.96);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.4rem;
+        transition: right 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        border-left: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        right: 0;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+      }
+
+      .nav-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
+
+      .nav-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid.col-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar-logo {
+        font-size: 0.95rem;
+      }
+
+      .form-etapa {
+        padding: 24px 16px;
+      }
+
+      .btn-submit {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .passos-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       CANVAS DE PARTÍCULAS
+       ============================================================ -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- ============================================================
+       NAV OVERLAY (mobile)
+       ============================================================ -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <nav class="navbar" role="navigation" aria-label="Navegação principal">
+    <a href="./index.html" class="navbar-logo">
+      Osorio Ai Labs | <span>Social</span>
+    </a>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks" role="menubar">
+      <li role="none"><a href="./index.html" role="menuitem">Vitrine</a></li>
+      <li role="none"><a href="#como-funciona" role="menuitem">Como Funciona</a></li>
+      <li role="none"><a href="cadastrar.html" role="menuitem" class="active">Cadastrar</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================
+       PAGE WRAPPER
+       ============================================================ -->
+  <div class="page-wrapper">
+
+    <!-- ==========================================================
+         SEÇÃO COMO FUNCIONA
+         ========================================================== -->
+    <section class="como-funciona fade-up" id="como-funciona" aria-labelledby="como-funciona-title">
+      <h2 id="como-funciona-title">Como transformar o seu currículo?</h2>
+      <p class="subtitulo">
+        Acreditamos que todo talento merece ser visto da melhor forma. Por isso, na iniciativa
+        <strong>Fazendo a Nossa Parte</strong>, transformamos o seu currículo tradicional em uma
+        página web interativa, moderna e fluida.
+      </p>
+
+      <div class="passos-grid">
+        <!-- Passo 1 -->
+        <article class="passo-card fade-up">
+          <span class="passo-numero">1</span>
+          <i class="fa-solid fa-pen-to-square passo-icon"></i>
+          <h3>Preencha o Formulário</h3>
+          <p>
+            Compartilhe sua trajetória, experiências e habilidades de forma detalhada no nosso formulário seguro.
+          </p>
+        </article>
+
+        <!-- Passo 2 -->
+        <article class="passo-card fade-up">
+          <span class="passo-numero">2</span>
+          <i class="fa-solid fa-wand-magic-sparkles passo-icon"></i>
+          <h3>Transformação Digital</h3>
+          <p>
+            Nossa tecnologia processa suas informações e cria um currículo digital exclusivo, com um design premium que atrai o olhar dos recrutadores.
+          </p>
+        </article>
+
+        <!-- Passo 3 -->
+        <article class="passo-card fade-up">
+          <span class="passo-numero">3</span>
+          <i class="fa-solid fa-briefcase passo-icon"></i>
+          <h3>Conexão com o Mercado</h3>
+          <p>
+            Seu perfil entra na nossa <strong>Vitrine de Talentos</strong>, ficando disponível para empresas parceiras.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         FORMULÁRIO DE CADASTRO
+         ========================================================== -->
+    <section class="cadastro fade-up" id="cadastrar" aria-labelledby="cadastro-title">
+      <div class="cadastro-header">
+        <h2 id="cadastro-title">Envie seu Currículo</h2>
+        <p>Preencha os campos abaixo para participar da nossa vitrine de talentos.</p>
+      </div>
+
+      <form class="form-container" id="formCurriculo" novalidate>
+
+        <!-- Etapa 1: Dados Pessoais e Contato -->
+        <fieldset class="form-etapa">
+          <legend><i class="fa-solid fa-user"></i> Etapa 1 — Dados Pessoais e Contato</legend>
+          <p class="etapa-desc">Informações básicas para que os recrutadores possam te encontrar.</p>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nome"><i class="fa-solid fa-id-card"></i> Nome Completo</label>
+              <input type="text" id="nome" name="nome" placeholder="Ex: Bruno Cavalcante" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label for="email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+              <input type="email" id="email" name="email" placeholder="Ex: bruno@email.com" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label for="whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</label>
+              <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: (21) 99999-9999" required autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+              <label for="cidade"><i class="fa-solid fa-location-dot"></i> Cidade / Estado</label>
+              <input type="text" id="cidade" name="cidade" placeholder="Ex: Rio de Janeiro / RJ" required>
+            </div>
+
+            <div class="form-group">
+              <label for="linkedin"><i class="fa-brands fa-linkedin"></i> LinkedIn <span class="opcional">opcional</span></label>
+              <input type="url" id="linkedin" name="linkedin" placeholder="Ex: https://linkedin.com/in/seuperfil">
+            </div>
+
+            <div class="form-group">
+              <label for="foto"><i class="fa-solid fa-camera"></i> Foto de Perfil <span class="opcional">opcional</span></label>
+              <div class="file-upload-wrapper">
+                <label for="foto" class="file-upload-label">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Escolher Foto
+                </label>
+                <input type="file" id="foto" name="foto" accept="image/*">
+                <span class="file-name" id="fileName">Nenhum arquivo selecionado</span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Etapa 2: Resumo Profissional -->
+        <fieldset class="form-etapa">
+          <legend><i class="fa-solid fa-star"></i> Etapa 2 — Resumo Profissional</legend>
+          <p class="etapa-desc">Um panorama rápido sobre quem você é profissionalmente.</p>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="cargo"><i class="fa-solid fa-briefcase"></i> Cargo Principal</label>
+              <input type="text" id="cargo" name="cargo" placeholder="Ex: Supervisor de Segurança" required>
+            </div>
+
+            <div class="form-group">
+              <label for="experiencia"><i class="fa-solid fa-clock"></i> Tempo de Experiência</label>
+              <select id="experiencia" name="experiencia" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="0-1">Menos de 1 ano</option>
+                <option value="1-3">1 a 3 anos</option>
+                <option value="3-5">3 a 5 anos</option>
+                <option value="5-10">5 a 10 anos</option>
+                <option value="10+">Mais de 10 anos</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tags"><i class="fa-solid fa-tags"></i> Tags de Perfil</label>
+              <input type="text" id="tags" name="tags" placeholder="Ex: Liderança, Vendas, Tecnologia" required>
+            </div>
+
+            <div class="form-group">
+              <label for="area"><i class="fa-solid fa-building"></i> Área de Atuação</label>
+              <select id="area" name="area" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="seguranca">Segurança</option>
+                <option value="tecnologia">Tecnologia</option>
+                <option value="administrativo">Administrativo</option>
+                <option value="comercial">Comercial</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="resumo"><i class="fa-solid fa-align-left"></i> Resumo sobre você</label>
+              <textarea id="resumo" name="resumo" placeholder="Conte um pouco sobre sua trajetória profissional, seus diferenciais e o que te move..." required></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Etapa 3: Histórico Profissional -->
+        <fieldset class="form-etapa">
+          <legend><i class="fa-solid fa-building-columns"></i> Etapa 3 — Histórico Profissional</legend>
+          <p class="etapa-desc">Suas experiências de trabalho mais relevantes.</p>
+
+          <!-- Experiência 1 -->
+          <div style="margin-bottom: 24px;">
+            <p style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--accent); margin-bottom: 14px;">
+              <i class="fa-solid fa-1"></i> Experiência Principal
+            </p>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="empresa1">Empresa</label>
+                <input type="text" id="empresa1" name="empresa1" placeholder="Ex: Empresa XYZ Ltda." required>
+              </div>
+              <div class="form-group">
+                <label for="cargo1">Cargo</label>
+                <input type="text" id="cargo1" name="cargo1" placeholder="Ex: Supervisor de Segurança" required>
+              </div>
+              <div class="form-group">
+                <label for="anoInicio1">Ano Início</label>
+                <input type="text" id="anoInicio1" name="anoInicio1" placeholder="Ex: 2020" required>
+              </div>
+              <div class="form-group">
+                <label for="anoSaida1">Ano Saída</label>
+                <input type="text" id="anoSaida1" name="anoSaida1" placeholder="Ex: 2024 ou Atual">
+              </div>
+              <div class="form-group full">
+                <label for="atividades1">Principais Atividades</label>
+                <textarea id="atividades1" name="atividades1" placeholder="Descreva suas principais responsabilidades e conquistas nesta posição..." rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experiência 2 -->
+          <div>
+            <p style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--accent); margin-bottom: 14px;">
+              <i class="fa-solid fa-2"></i> Segunda Experiência <span style="font-weight: 300; color: var(--text-muted); font-size: 0.75rem; margin-left: 6px;">opcional</span>
+            </p>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="empresa2">Empresa</label>
+                <input type="text" id="empresa2" name="empresa2" placeholder="Ex: Empresa ABC S.A.">
+              </div>
+              <div class="form-group">
+                <label for="cargo2">Cargo</label>
+                <input type="text" id="cargo2" name="cargo2" placeholder="Ex: Vigilante">
+              </div>
+              <div class="form-group">
+                <label for="anoInicio2">Ano Início</label>
+                <input type="text" id="anoInicio2" name="anoInicio2" placeholder="Ex: 2017">
+              </div>
+              <div class="form-group">
+                <label for="anoSaida2">Ano Saída</label>
+                <input type="text" id="anoSaida2" name="anoSaida2" placeholder="Ex: 2020">
+              </div>
+              <div class="form-group full">
+                <label for="atividades2">Principais Atividades</label>
+                <textarea id="atividades2" name="atividades2" placeholder="Descreva suas principais responsabilidades e conquistas..." rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Etapa 4: Formação e Educação -->
+        <fieldset class="form-etapa">
+          <legend><i class="fa-solid fa-graduation-cap"></i> Etapa 4 — Formação e Educação</legend>
+          <p class="etapa-desc">Sua trajetória acadêmica e educacional.</p>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="escolaridade"><i class="fa-solid fa-certificate"></i> Escolaridade</label>
+              <select id="escolaridade" name="escolaridade" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="fundamental">Ensino Fundamental</option>
+                <option value="medio">Ensino Médio</option>
+                <option value="tecnico">Ensino Técnico</option>
+                <option value="superior">Ensino Superior</option>
+                <option value="pos">Pós-Graduação</option>
+                <option value="mestrado">Mestrado</option>
+                <option value="doutorado">Doutorado</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="curso">Curso</label>
+              <input type="text" id="curso" name="curso" placeholder="Ex: Gestão de Segurança" required>
+            </div>
+
+            <div class="form-group full">
+              <label for="instituicao">Instituição</label>
+              <input type="text" id="instituicao" name="instituicao" placeholder="Ex: Universidade Estácio de Sá" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Etapa 5: Competências e Cursos -->
+        <fieldset class="form-etapa">
+          <legend><i class="fa-solid fa-lightbulb"></i> Etapa 5 — Competências e Cursos</legend>
+          <p class="etapa-desc">Habilidades técnicas, comportamentais e cursos que complementam seu perfil.</p>
+
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="habilidades"><i class="fa-solid fa-gears"></i> Habilidades</label>
+              <textarea id="habilidades" name="habilidades" placeholder="Separe suas habilidades por vírgula. Ex: Gestão de Equipes, CFTV, Controle de Acesso, Brigada de Incêndio..." rows="3" required></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="cursos"><i class="fa-solid fa-book-open"></i> Cursos Complementares <span class="opcional">opcional</span></label>
+              <textarea id="cursos" name="cursos" placeholder="Liste cursos, certificações e treinamentos relevantes... Ex: NR-35, CPA-20, Green Belt..." rows="3"></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Botão de Envio -->
+        <div class="submit-wrapper">
+          <button type="submit" class="btn-submit ripple-target">
+            <i class="fa-solid fa-paper-plane"></i> Enviar Meu Currículo
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ==========================================================
+         FOOTER
+         ========================================================== -->
+    <footer class="footer fade-up">
+      <div class="footer-message">
+        <i class="fa-solid fa-hand-holding-heart footer-icon"></i>
+        Acreditamos no poder transformador da tecnologia para gerar impacto social real.
+        Este portal é uma ponte entre talentos e as oportunidades que eles merecem.
+      </div>
+      <a href="https://www.osorioailabs.com.br" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> www.osorioailabs.com.br
+      </a>
+      <p class="footer-copy">&copy; 2026 Osorio Ai Labs. Todos os direitos reservados.</p>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================
+       TOAST DE SUCESSO
+       ============================================================ -->
+  <div class="toast-overlay" id="toastOverlay" aria-hidden="true">
+    <div class="toast-card" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-check toast-icon"></i>
+      <h3>Currículo recebido com sucesso!</h3>
+      <p>Seu perfil será processado e em breve entrará na nossa Vitrine de Talentos. Fique de olho no seu e-mail!</p>
+      <button class="toast-btn" id="toastClose">Entendi</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ==========================================================
+         PARTÍCULAS NO CANVAS
+         ========================================================== */
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+      const CONNECTION_DIST = 130;
+      const MOUSE_RADIUS = 160;
+      let mouseX = -1000;
+      let mouseY = -1000;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function createParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 1.6 + 0.6,
+          });
+        }
+      }
+
+      createParticles();
+      window.addEventListener('resize', createParticles);
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+
+          // Move a partícula
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Rebate nas bordas
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+
+          // Desenha o ponto
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,191,255,0.45)';
+          ctx.fill();
+
+          // Conexões entre partículas
+          for (let j = i + 1; j < particles.length; j++) {
+            const q = particles[j];
+            const dx = p.x - q.x;
+            const dy = p.y - q.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < CONNECTION_DIST) {
+              const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.strokeStyle = 'rgba(0,191,255,' + alpha + ')';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+
+          // Interação com o mouse
+          const mdx = p.x - mouseX;
+          const mdy = p.y - mouseY;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+
+          if (mDist < MOUSE_RADIUS) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+            const mAlpha = (1 - mDist / MOUSE_RADIUS) * 0.22;
+            ctx.strokeStyle = 'rgba(0,191,255,' + mAlpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+
+            // Leve atração ao mouse
+            p.vx += (mdx / mDist) * 0.02;
+            p.vy += (mdy / mDist) * 0.02;
+
+            // Amortecimento de velocidade
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 1.2) {
+              p.vx = (p.vx / speed) * 1.2;
+              p.vy = (p.vy / speed) * 1.2;
+            }
+          }
+        }
+
+        requestAnimationFrame(drawParticles);
+      }
+
+      drawParticles();
+
+      /* ==========================================================
+         MENU MOBILE
+         ========================================================== */
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      const navOverlay = document.getElementById('navOverlay');
+
+      function openMenu() {
+        hamburger.classList.add('open');
+        navLinks.classList.add('open');
+        navOverlay.classList.add('show');
+        hamburger.setAttribute('aria-expanded', 'true');
+        hamburger.setAttribute('aria-label', 'Fechar menu');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+        navOverlay.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Abrir menu');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', function () {
+        if (navLinks.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      navOverlay.addEventListener('click', closeMenu);
+
+      // Fecha menu ao clicar em um link (mobile)
+      navLinks.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          if (navLinks.classList.contains('open')) {
+            closeMenu();
+          }
+        });
+      });
+
+      // Fecha ao pressionar Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+
+      /* ==========================================================
+         EFEITO RIPPLE — Nos botões com classe .ripple-target
+         ========================================================== */
+      document.querySelectorAll('.ripple-target').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          const rect = btn.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.width = size + 'px';
+          ripple.style.height = size + 'px';
+          ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+          ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+          btn.appendChild(ripple);
+
+          ripple.addEventListener('animationend', function () {
+            ripple.remove();
+          });
+        });
+      });
+
+      /* ==========================================================
+         EXIBIÇÃO DO NOME DO ARQUIVO NO UPLOAD
+         ========================================================== */
+      const fotoInput = document.getElementById('foto');
+      const fileNameSpan = document.getElementById('fileName');
+
+      fotoInput.addEventListener('change', function () {
+        if (fotoInput.files && fotoInput.files.length > 0) {
+          fileNameSpan.textContent = fotoInput.files[0].name;
+        } else {
+          fileNameSpan.textContent = 'Nenhum arquivo selecionado';
+        }
+      });
+
+      /* ==========================================================
+         SUBMISSÃO DO FORMULÁRIO
+         ========================================================== */
+      const form = document.getElementById('formCurriculo');
+      const toastOverlay = document.getElementById('toastOverlay');
+      const toastClose = document.getElementById('toastClose');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Validação básica
+        const requiredFields = form.querySelectorAll('[required]');
+        let valid = true;
+
+        requiredFields.forEach(function (field) {
+          if (!field.value.trim()) {
+            valid = false;
+            field.style.borderColor = '#ff4444';
+            field.style.boxShadow = '0 0 0 3px rgba(255,68,68,0.2)';
+
+            // Remove o destaque de erro ao preencher
+            field.addEventListener('input', function clearError() {
+              field.style.borderColor = '';
+              field.style.boxShadow = '';
+              field.removeEventListener('input', clearError);
+            });
+          }
+        });
+
+        if (!valid) {
+          // Rola até o primeiro campo inválido
+          const firstInvalid = form.querySelector('[style*="border-color: rgb(255, 68, 68)"]');
+          if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalid.focus();
+          }
+          return;
+        }
+
+        // Exibe toast de sucesso
+        toastOverlay.classList.add('show');
+        toastOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        // Limpa o formulário
+        form.reset();
+        fileNameSpan.textContent = 'Nenhum arquivo selecionado';
+      });
+
+      // Fechar toast
+      function closeToast() {
+        toastOverlay.classList.remove('show');
+        toastOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      toastClose.addEventListener('click', closeToast);
+
+      toastOverlay.addEventListener('click', function (e) {
+        if (e.target === toastOverlay) {
+          closeToast();
+        }
+      });
+
+      // Fechar toast com Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && toastOverlay.classList.contains('show')) {
+          closeToast();
+        }
+      });
+
+      /* ==========================================================
+         INTERSECTION OBSERVER — Revelação ao rolar
+         ========================================================== */
+      const fadeEls = document.querySelectorAll('.fade-up');
+
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.12,
+          rootMargin: '0px 0px -30px 0px',
+        }
+      );
+
+      fadeEls.forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // Exibe elementos já visíveis ao carregar
+      window.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.fade-up').forEach(function (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight) {
+            el.classList.add('visible');
+          }
+        });
+      });
+
+      /* ==========================================================
+         ROLAGEM SUAVE — Offset para compensar a navbar fixa
+         ========================================================== */
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        });
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
