@@ -23,7 +23,7 @@
       content: ''; position: fixed; inset: 0; z-index: 0;
       background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,100,180,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 85%, rgba(0,191,255,0.10) 0%, transparent 55%), linear-gradient(135deg, #0a0a12 0%, #101020 50%, #0d1020 100%);
     }
-    #particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     
     /* Telas de Carregamento e Erro */
     #loading-screen, #error-screen { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--bg-deep); color: var(--text); padding: 20px; }
@@ -94,6 +94,8 @@
   </style>
 </head>
 <body>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
   <div id="loading-screen">
     <i class="fa-solid fa-circle-notch"></i>
     <h2 style="font-family:'Montserrat', sans-serif;">A gerar currículo interativo...</h2>
@@ -134,6 +136,7 @@
       <div class="hero-contacts">
         <a id="link-whatsapp" href="#" target="_blank" class="contact-chip"><i class="fab fa-whatsapp"></i><span id="txt-whatsapp">WhatsApp</span></a>
         <a id="link-email" href="#" class="contact-chip"><i class="fa fa-envelope"></i><span id="txt-email">E-mail</span></a>
+        <a id="link-linkedin" href="#" target="_blank" class="contact-chip"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
       </div>
     </section>
 
@@ -191,6 +194,93 @@
   </div>
 
   <script>
+    /* ==========================================================
+       PARTÍCULAS NO CANVAS — Rede de pontos flutuantes
+       ========================================================== */
+    (function () {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+      const CONNECTION_DIST = 130;
+      const MOUSE_RADIUS = 160;
+      let mouseX = -1000;
+      let mouseY = -1000;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function createParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 1.6 + 0.6,
+          });
+        }
+      }
+      createParticles();
+      window.addEventListener('resize', createParticles);
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,191,255,0.45)';
+          ctx.fill();
+          for (let j = i + 1; j < particles.length; j++) {
+            const q = particles[j];
+            const dx = p.x - q.x;
+            const dy = p.y - q.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECTION_DIST) {
+              const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.strokeStyle = 'rgba(0,191,255,' + alpha + ')';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+          const mdx = p.x - mouseX;
+          const mdy = p.y - mouseY;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < MOUSE_RADIUS) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+            const mAlpha = (1 - mDist / MOUSE_RADIUS) * 0.22;
+            ctx.strokeStyle = 'rgba(0,191,255,' + mAlpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            p.vx += (mdx / mDist) * 0.02;
+            p.vy += (mdy / mDist) * 0.02;
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 1.2) { p.vx = (p.vx / speed) * 1.2; p.vy = (p.vy / speed) * 1.2; }
+          }
+        }
+        requestAnimationFrame(drawParticles);
+      }
+      drawParticles();
+    })();
+
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1UZ1hQH-s-R9DU1IuxatE3iiEMhfPn1ofZCCDrZgWdKP_35OAQZumbJpClVdUii1l/exec';
 
     async function carregarPerfil() {
@@ -241,11 +331,29 @@
       document.getElementById('page-title').textContent = `${nomeStr} - Currículo`;
       document.getElementById('cv-localidade').textContent = p.cidade || "Local não informado";
       
-      const fotoStr = String(p.foto || "");
+      // Foto Dinâmica
+      const fotoStr = String(p.foto || "").trim();
+      const imgEl = document.getElementById('cv-img');
+      const iconEl = document.getElementById('cv-icon');
+
       if (fotoStr.startsWith("http")) {
-          document.getElementById('cv-img').src = fotoStr;
-          document.getElementById('cv-img').style.display = 'block';
-          document.getElementById('cv-icon').style.display = 'none';
+          imgEl.setAttribute('src', fotoStr);
+          imgEl.style.cssText = 'display: block !important; width: 100%; height: 100%; object-fit: cover;';
+          iconEl.style.display = 'none';
+      } else {
+          imgEl.style.display = 'none';
+          iconEl.style.display = 'block';
+      }
+
+      // LinkedIn
+      const linkedinStr = String(p.linkedin || "").trim();
+      const linkedinEl = document.getElementById('link-linkedin');
+
+      if (linkedinStr.startsWith("http")) {
+          linkedinEl.href = linkedinStr;
+          linkedinEl.style.cssText = 'display: inline-flex !important;';
+      } else {
+          linkedinEl.style.display = 'none';
       }
 
       // CORREÇÃO CRUCIAL AQUI: Converter forçosamente para String
