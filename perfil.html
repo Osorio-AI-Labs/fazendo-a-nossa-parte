@@ -150,7 +150,7 @@
     .edu-info p { font-size: .85rem; color: var(--text-muted); margin-top: 4px; }
 
     /* Footer */
-    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; position: relative; z-index: 1; color: var(--text-muted); font-size: .78rem; }
+    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; position: relative; z-index: 1; color: var(--text-muted); font-size: .78rem; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px; }
 
     /* Back to top */
     #back-top { position: fixed; bottom: 2rem; right: 1.5rem; z-index: 200; width: 46px; height: 46px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); box-shadow: -4px -4px 10px var(--shadow-light),4px 4px 10px var(--shadow-dark); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.1rem; cursor: pointer; text-decoration: none; opacity: 0; pointer-events: none; transition: all .3s ease; }
@@ -224,6 +224,11 @@
         <a id="link-email" href="#" class="contact-chip ripple-host"><i class="fa fa-envelope"></i><span id="txt-email">E-mail</span></a>
         <a id="link-linkedin" href="#" target="_blank" class="contact-chip ripple-host"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
       </div>
+      <div class="hero-actions" style="margin-top: 2.5rem; position: relative; z-index: 10;">
+        <button onclick="baixarHTMLSnapshot()" class="contact-chip" style="background: var(--accent); color: #000; border: none; font-weight: bold; cursor: pointer; padding: 12px 24px;">
+          <i class="fa fa-download"></i> Baixar Currículo (HTML)
+        </button>
+      </div>
       <div class="scroll-indicator"><span>Role</span><i class="fa fa-chevron-down"></i></div>
     </section>
 
@@ -291,6 +296,7 @@
 
     <footer>
       <p>© 2026 <span id="footer-nome">Profissional</span></p>
+      <img src="https://raw.githubusercontent.com/Osorio-AI-Labs/Imagem-de-e-mail-Site-Osorio-AI-Lbas/main/Logo%20Osorio%20Labs.png" alt="Osorio AI Labs" style="height: 25px; object-fit: contain; vertical-align: middle; margin-left: 15px;">
     </footer>
   </div>
 
@@ -652,6 +658,30 @@
           setTimeout(function () { w.remove(); }, 600);
         });
       });
+    }
+
+    function baixarHTMLSnapshot() {
+      const clone = document.documentElement.cloneNode(true);
+
+      const scripts = clone.querySelectorAll('script');
+      scripts.forEach(s => s.remove());
+
+      const btnDownload = clone.querySelector('.hero-actions');
+      if (btnDownload) btnDownload.remove();
+
+      const htmlContent = clone.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+
+      const nomeCandidato = document.getElementById('cv-nome').innerText.replace(/\n/g, ' ').trim() || 'Curriculo';
+      a.download = 'Curriculo_' + nomeCandidato.replace(/\s+/g, '_') + '_OsorioAILabs.html';
+
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     window.addEventListener('DOMContentLoaded', carregarPerfil);
