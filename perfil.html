@@ -258,7 +258,7 @@
       document.getElementById('link-email').href = `mailto:${emailStr}`;
       
       if (p.tags) {
-          String(p.tags).split(',').forEach(tag => {
+          String(p.tags || "").split(',').forEach(tag => {
               document.getElementById('cv-tags').innerHTML += `<span class="role-tag">${tag.trim()}</span>`;
           });
       }
@@ -267,12 +267,12 @@
       document.getElementById('txt-escola').textContent = "Educação"; 
 
       if (p.formacao) {
-          String(p.formacao).split(',').forEach(curso => {
+          String(p.formacao || "").split(',').forEach(curso => {
               document.getElementById('cv-cursos').innerHTML += `<div class="course-item"><div class="ci"><i class="fa fa-check"></i></div><span>${curso.trim()}</span></div>`;
           });
       }
       if (p.competencias) {
-          String(p.competencias).split(',').forEach(comp => {
+          String(p.competencias || "").split(',').forEach(comp => {
               document.getElementById('cv-competencias').innerHTML += `<span class="skill-chip"><i class="fa fa-star"></i>${comp.trim()}</span>`;
           });
       }
