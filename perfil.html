@@ -124,7 +124,7 @@
     <section id="hero">
       <div class="hero-photo-frame">
         <div class="hero-avatar" id="cv-avatar-container">
-          <img id="cv-img" src="" alt="Foto" style="display:none;" onerror="this.style.display='none'; document.getElementById('cv-icon').style.display='block';">
+          <img id="cv-img" alt="Foto do candidato">
           <i id="cv-icon" class="fa-solid fa-user-tie"></i>
         </div>
       </div>
@@ -331,15 +331,25 @@
       document.getElementById('page-title').textContent = `${nomeStr} - Currículo`;
       document.getElementById('cv-localidade').textContent = p.cidade || "Local não informado";
       
-      // Foto Dinâmica
+      // Foto Dinâmica (com handlers onload/onerror)
       const fotoStr = String(p.foto || "").trim();
       const imgEl = document.getElementById('cv-img');
       const iconEl = document.getElementById('cv-icon');
 
       if (fotoStr.startsWith("http")) {
-          imgEl.setAttribute('src', fotoStr);
-          imgEl.style.cssText = 'display: block !important; width: 100%; height: 100%; object-fit: cover;';
-          iconEl.style.display = 'none';
+          imgEl.style.cssText = 'display: none; width: 100%; height: 100%; object-fit: cover;';
+          iconEl.style.display = 'block';
+
+          imgEl.onload = function () {
+              imgEl.style.cssText = 'display: block !important; width: 100%; height: 100%; object-fit: cover;';
+              iconEl.style.display = 'none';
+          };
+          imgEl.onerror = function () {
+              imgEl.style.display = 'none';
+              iconEl.style.display = 'block';
+          };
+
+          imgEl.src = fotoStr;
       } else {
           imgEl.style.display = 'none';
           iconEl.style.display = 'block';
