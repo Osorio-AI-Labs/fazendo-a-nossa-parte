@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termos de Uso | Osorio AI Labs Social</title>
+  <meta name="description" content="Termos de Uso e Consentimento do projeto Fazendo a Nossa Parte — Osorio AI Labs.">
+  <meta name="theme-color" content="#0f0f14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-deep: #0f0f14; --bg-base: #1a1a24; --card-bg: #1e1e2c; --card-light: #252535;
+      --accent: #00bfff; --accent2: #0080c8; --accent-glow: rgba(0,191,255,0.25);
+      --text: #e8e8f0; --text-muted: #8888aa; --border: rgba(0,191,255,0.12);
+      --radius: 18px; --nav-height: 72px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Roboto', sans-serif; font-weight: 300;
+      background: var(--bg-deep); color: var(--text); line-height: 1.7;
+      overflow-x: hidden; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, var(--accent-glow) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(0,128,200,0.12) 0%, transparent 50%);
+      z-index: 0; pointer-events: none;
+      animation: glowPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+    #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(15,15,20,0.72); backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 80px); z-index: 1000;
+    }
+    .navbar-logo {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.15rem;
+      color: var(--text); letter-spacing: -0.3px; white-space: nowrap; text-decoration: none;
+    }
+    .navbar-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-muted); font-family: 'Roboto', sans-serif;
+      font-weight: 400; font-size: 0.95rem; transition: color 0.25s ease; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+      background: var(--accent); transition: width 0.3s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    .page-wrapper { position: relative; z-index: 1; }
+    .content-section {
+      max-width: 860px; margin: 0 auto;
+      padding: calc(var(--nav-height) + 60px) clamp(20px, 5vw, 60px) 80px;
+    }
+    .content-section h1 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 8px; color: var(--text);
+    }
+    .content-section .meta-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-bottom: 40px;
+    }
+    .content-section h2 {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.3rem;
+      color: var(--accent); margin: 40px 0 14px; padding-top: 10px;
+    }
+    .content-section h3 {
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.05rem;
+      color: var(--text); margin: 24px 0 10px;
+    }
+    .content-section p {
+      color: var(--text-muted); margin-bottom: 14px; font-size: 0.95rem; line-height: 1.75;
+    }
+    .content-section ul {
+      color: var(--text-muted); margin: 10px 0 20px 24px; font-size: 0.95rem; line-height: 1.8;
+    }
+    .content-section hr {
+      border: none; border-top: 1px solid var(--border); margin: 36px 0;
+    }
+    .content-section a { color: var(--accent); text-decoration: none; }
+    .content-section a:hover { text-decoration: underline; }
+    .content-section strong { color: var(--text); font-weight: 500; }
+    .content-section table {
+      width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+      font-size: 0.9rem;
+    }
+    .content-section th, .content-section td {
+      text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border);
+    }
+    .content-section th {
+      font-family: 'Montserrat', sans-serif; font-weight: 600; color: var(--accent);
+      font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .content-section td { color: var(--text-muted); }
+    .content-section .highlight-box {
+      background: rgba(0,191,255,0.06); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; margin: 24px 0;
+    }
+    .content-section .highlight-box p { margin-bottom: 0; }
+    .consent-check {
+      display: flex; align-items: flex-start; gap: 12px; margin-top: 32px;
+      padding: 24px; background: rgba(0,191,255,0.06); border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .consent-check .checkbox {
+      width: 24px; height: 24px; min-width: 24px; border: 2px solid var(--accent);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.8rem;
+    }
+
+    .footer {
+      position: relative; z-index: 1; padding: 40px clamp(20px, 5vw, 80px) 36px;
+      border-top: 1px solid var(--border); text-align: center;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--text-muted); opacity: 0.6; }
+
+    @media (max-width: 768px) {
+      .content-section h1 { font-size: 1.5rem; }
+      .content-section { padding-top: calc(var(--nav-height) + 30px); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <nav class="navbar" role="navigation">
+    <a href="./index.html" class="navbar-logo">
+      <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i> Osorio Ai Labs | <span>Social</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="./index.html">Vitrine</a></li>
+      <li><a href="cadastrar.html">Cadastrar</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="content-section">
+      <h1>Termos de Uso</h1>
+      <p class="meta-info">
+        <strong>Controlador dos dados:</strong> Osorio AI Labs<br>
+        <strong>Contato oficial:</strong> <a href="mailto:social@osorioailabs.com.br">social@osorioailabs.com.br</a>
+      </p>
+
+      <div class="highlight-box">
+        <p>Antes de enviar o seu cadastro, leia atentamente este Termo. Ele explica, de forma simples e direta, o que acontece com os seus dados ao participar do projeto <strong>"Fazendo a Nossa Parte"</strong>. Ao marcar a caixa de consentimento e enviar o formulário, você concorda com todas as condições aqui descritas.</p>
+      </div>
+
+      <hr>
+
+      <h2>O que você está autorizando?</h2>
+      <p>Ao aceitar este Termo, você consente <strong>livre, informada e inequivocamente</strong> com o seguinte:</p>
+
+      <h3>1. Coleta e tratamento dos seus dados pessoais</h3>
+      <p>Você autoriza a <strong>Osorio AI Labs</strong> a recolher, armazenar e processar os dados que você fornecer no formulário de cadastro, incluindo:</p>
+      <ul>
+        <li>Nome completo</li>
+        <li>E-mail</li>
+        <li>WhatsApp</li>
+        <li>Cidade e Estado</li>
+        <li>LinkedIn (se fornecido)</li>
+        <li>Foto de perfil (se fornecida)</li>
+        <li>Cargo pretendido</li>
+        <li>Tempo de experiência profissional</li>
+        <li>Resumo profissional</li>
+        <li>Histórico de trabalho</li>
+        <li>Formação acadêmica</li>
+        <li>Competências</li>
+      </ul>
+
+      <h3>2. Criação e divulgação do currículo digital</h3>
+      <p>Você autoriza a Osorio AI Labs a processar os seus dados para gerar uma <strong>página web de currículo interativo</strong> e a disponibilizá-la na internet como parte da <strong>Vitrine de Talentos</strong> do projeto.</p>
+
+      <h3>3. Partilha com empresas parceiras para fins de recrutamento</h3>
+      <p><strong>Este é o ponto mais importante:</strong> você autoriza expressamente que o seu currículo, os seus dados de contacto (e-mail e WhatsApp) e o seu perfil profissional sejam <strong>partilhados ativamente com empresas parceiras e recrutadores</strong> conveniados à Osorio AI Labs, com a finalidade <strong>exclusiva</strong> de participação em processos de recrutamento e seleção.</p>
+
+      <div class="highlight-box">
+        <p>Sim, isso significa que uma empresa parceira poderá ver o seu currículo, entrar em contacto diretamente consigo e convidá-lo(a) para uma entrevista de emprego. <strong>Este é o objetivo do projeto.</strong></p>
+      </div>
+
+      <h3>4. Armazenamento e retenção dos dados</h3>
+      <p>Você autoriza que os seus dados sejam armazenados de forma segura na nuvem (Google Cloud e Google Sheets) e mantidos na nossa base de talentos por tempo indeterminado, para que possamos contactá-lo(a) sobre <strong>futuras oportunidades de emprego</strong> que correspondam ao seu perfil — mesmo que não seja selecionado(a) de imediato.</p>
+
+      <hr>
+
+      <h2>Isenção de responsabilidade</h2>
+      <p>A Osorio AI Labs atua como uma <strong>ponte tecnológica</strong> — criamos e divulgamos o seu currículo digital e ligamos você a empresas que estão a contratar.</p>
+      <p><strong>Você compreende e concorda que:</strong></p>
+      <ul>
+        <li>A Osorio AI Labs <strong>não garante</strong> que você será contratado(a) por qualquer empresa parceira.</li>
+        <li>A Osorio AI Labs <strong>não participa</strong> dos processos seletivos, não define salários, condições de trabalho ou qualquer termo do vínculo empregatício.</li>
+        <li>A Osorio AI Labs <strong>não se responsabiliza</strong> pelas ações, omissões, decisões ou condutas das empresas parceiras.</li>
+        <li>Qualquer relação de trabalho que venha a ser estabelecida é <strong>exclusivamente entre você e a empresa contratante</strong>.</li>
+      </ul>
+      <p>A nossa responsabilidade é técnica: criar o currículo, divulgar o perfil e facilitar a ponte. O resto — a entrevista, a negociação, a contratação — corre entre você e a empresa.</p>
+
+      <hr>
+
+      <h2>Os seus direitos (LGPD)</h2>
+      <p>Você não perde nenhum direito ao aceitar este Termo. A qualquer momento, você pode:</p>
+      <ul>
+        <li><strong>Aceder</strong> aos seus dados gratuitamente para saber o que consta na nossa base.</li>
+        <li><strong>Corrigir</strong> informações incompletas, desatualizadas ou incorretas.</li>
+        <li><strong>Remover o seu perfil da Vitrine de Talentos</strong>, mantendo ou não o seu cadastro na base.</li>
+        <li><strong>Revogar este consentimento</strong> total ou parcialmente.</li>
+        <li><strong>Solicitar a exclusão definitiva</strong> de todos os seus dados pessoais da nossa base.</li>
+      </ul>
+      <p>Para exercer qualquer um desses direitos, basta enviar um e-mail para:</p>
+      <p><i class="fa-solid fa-envelope" style="color:var(--accent); margin-right:6px;"></i> <a href="mailto:social@osorioailabs.com.br">social@osorioailabs.com.br</a></p>
+      <p>Responderemos no prazo de até <strong>15 (quinze) dias</strong> corridos.</p>
+
+      <hr>
+
+      <h2>Consentimento livre e informado</h2>
+      <p>Ao marcar a caixa abaixo e enviar o formulário de cadastro, você declara que:</p>
+      <ul>
+        <li>Leu e compreendeu este Termo de Consentimento e Uso de Dados.</li>
+        <li>Está ciente de que os seus dados serão partilhados com empresas parceiras para fins de recrutamento.</li>
+        <li>Compreende que a Osorio AI Labs não garante contratação nem se responsabiliza pelas empresas parceiras.</li>
+        <li>Sabe que pode revogar este consentimento ou solicitar a exclusão dos seus dados a qualquer momento pelo e-mail <a href="mailto:social@osorioailabs.com.br">social@osorioailabs.com.br</a>.</li>
+        <li>Fornece os seus dados de forma <strong>voluntária, livre e informada</strong>.</li>
+      </ul>
+
+      <div class="consent-check">
+        <div class="checkbox"><i class="fa-solid fa-check"></i></div>
+        <p style="margin:0;"><strong>Aceito os termos acima e autorizo o tratamento dos meus dados pessoais nos termos descritos.</strong></p>
+      </div>
+
+      <hr>
+
+      <p style="text-align:center; font-style: italic;">Projeto "Fazendo a Nossa Parte" — uma iniciativa Osorio AI Labs.</p>
+    </main>
+
+    <footer class="footer">
+      <p class="footer-copy">&copy; 2026 Osorio Ai Labs. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+      const CONNECTION_DIST = 130;
+      const MOUSE_RADIUS = 160;
+      let mouseX = -1000;
+      let mouseY = -1000;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function createParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 1.6 + 0.6,
+          });
+        }
+      }
+      createParticles();
+      window.addEventListener('resize', createParticles);
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,191,255,0.45)';
+          ctx.fill();
+          for (let j = i + 1; j < particles.length; j++) {
+            const q = particles[j];
+            const dx = p.x - q.x;
+            const dy = p.y - q.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECTION_DIST) {
+              const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.strokeStyle = 'rgba(0,191,255,' + alpha + ')';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+          const mdx = p.x - mouseX;
+          const mdy = p.y - mouseY;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < MOUSE_RADIUS) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+            const mAlpha = (1 - mDist / MOUSE_RADIUS) * 0.22;
+            ctx.strokeStyle = 'rgba(0,191,255,' + mAlpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            p.vx += (mdx / mDist) * 0.02;
+            p.vy += (mdy / mDist) * 0.02;
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 1.2) { p.vx = (p.vx / speed) * 1.2; p.vy = (p.vy / speed) * 1.2; }
+          }
+        }
+        requestAnimationFrame(drawParticles);
+      }
+      drawParticles();
+    })();
+  </script>
+</body>
+</html>
